@@ -22,7 +22,8 @@
   "homepage": "https://github.com/nj-anderson/finalproject-find-gamers#readme",
   "dependencies": {
     "dotenv": "^18.0.0",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "mongoose": "^9.10.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
