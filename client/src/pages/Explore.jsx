@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "../styles/explore.css";
+import UserCard from "../components/UserCard.jsx";
 
 function Explore() {
     const [users, setUsers] = useState([]);
@@ -36,14 +37,9 @@ function Explore() {
             {error && <p>{error}</p>}
 
             {!loading && !error && (
-                <div>
+                <div className="user-card-container">
                     {users.map((user) => (
-                        <div key={user._id}>
-                            <h2>{user.username}</h2>
-                            <p>{user.bio}</p>
-                            <p>Region: {user.region}</p>
-                            <p>Platforms: {user.platforms.join(", ")}</p>
-                        </div>
+                        <UserCard key={user._id} user={user} />
                     ))}
                 </div>
             )}
