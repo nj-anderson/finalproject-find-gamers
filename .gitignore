@@ -10,5 +10,5 @@
 /dataSources.local.xml
 
 node_modules/
-.env
+server/.env
 .DS_Store
