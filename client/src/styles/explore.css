@@ -1,7 +1,7 @@
 .user-card-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    width: 90%;
-    margin-left: 30px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 60px;
+    width: 95%;
+    margin: 50px;
 }
