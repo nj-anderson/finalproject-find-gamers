@@ -1,7 +1,8 @@
 .user-card-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 60px;
-    width: 95%;
-    margin: 50px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    width: 90%;
+    max-width: 1600px;
+    margin: 0 auto;
 }

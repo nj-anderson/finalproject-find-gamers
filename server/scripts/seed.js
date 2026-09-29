@@ -2,7 +2,6 @@
 
 // DO NOT RUN THIS SCRIPT UNLESS YOU WANT TO CLEAR YOUR DATABASE AND SEED IT WITH INITIAL DATA
 
-
 const mongoose = require("mongoose");
 require("dotenv").config();
 
@@ -12,7 +11,7 @@ const users = [
     {
         username: "ValorantQueen",
         password: "dummy",
-        profilePicture: null,
+        profilePicture: "https://i.pravatar.cc/150?img=1",
         bio: "Looking for some chill Valorant games!",
         region: "North America East",
         platforms: ["PC"],
@@ -36,7 +35,7 @@ const users = [
     {
         username: "ChillGamer22",
         password: "dummy",
-        profilePicture: null,
+        profilePicture: "https://i.pravatar.cc/150?img=2",
         bio: "Mostly play after class. Down for pretty much anything.",
         region: "North America East",
         platforms: ["PC", "PlayStation"],
@@ -67,7 +66,7 @@ const users = [
     {
         username: "RocketPro",
         password: "dummy",
-        profilePicture: null,
+        profilePicture: "https://i.pravatar.cc/150?img=3",
         bio: "Competitive Rocket League player.",
         region: "North America West",
         platforms: ["PC"],
@@ -91,7 +90,7 @@ const users = [
     {
         username: "MinecraftMatt",
         password: "dummy",
-        profilePicture: null,
+        profilePicture: "https://i.pravatar.cc/150?img=4",
         bio: "Building stuff and exploring.",
         region: "North America East",
         platforms: ["PC"],
@@ -115,7 +114,7 @@ const users = [
     {
         username: "OverwatchAmy",
         password: "dummy",
-        profilePicture: null,
+        profilePicture: "https://i.pravatar.cc/150?img=5",
         bio: "Support main looking for a regular group.",
         region: "North America East",
         platforms: ["PC"],

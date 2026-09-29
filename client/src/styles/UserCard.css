@@ -1,9 +1,191 @@
 .user-card {
-    background-color: white;
-    border-radius: 12px;
-    padding: 16px;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    background: white;
+    border: 1px solid #e1e5eb;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+
     width: 100%;
-    max-width: 400px;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+/* TOP SECTION */
+
+.user-card-top {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+/* Profile picture */
+
+.profile-picture {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.online-dot {
+    position: absolute;
+    right: 0;
+    bottom: 3px;
+
+    width: 12px;
+    height: 12px;
+
+    background: #20b56b;
+    border: 3px solid white;
+    border-radius: 50%;
+}
+
+/* USER INFO */
+
+.user-name-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.user-name-row h2 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.looking-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 10px 14px;
+    border-radius: 10px;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.looking-badge {
+    background: #d9f7e8;
+    color: #16834e;
+    padding: 7px 10px;
+    border-radius: 10px;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.looking {
+    background: #d9f7e8;
+    color: #16834e;
+}
+
+.not-looking {
+    background: #fde2e2;
+    color: #c53030;
+}
+
+.user-region {
+    margin: 4px 0 10px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.user-bio {
+    margin: 0 0 12px;
+    color: #334155;
+    font-size: 13px;
+}
+
+/* PLATFORMS */
+
+.platforms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.platform-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    background: #edf4ff;
+    color: #24518a;
+
+    padding: 7px 12px;
+    border-radius: 10px;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    white-space: nowrap;
+}
+
+.platform-badge svg {
+    flex-shrink: 0;
+}
+
+/* GAMES */
+
+.games-section {
+    margin-top: 22px;
+}
+
+.games-section h3 {
+    margin: 0 0 10px;
+    font-size: 17px;
+}
+
+.game-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    background: #f6f8fb;
+    border-radius: 10px;
+
+    padding: 10px;
+    margin-bottom: 8px;
+}
+
+/* GAME ICON */
+
+.game-icon {
+    width: 55px;
+    height: 55px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #101827;
+    border-radius: 9px;
+
+    font-size: 24px;
+}
+
+/* GAME INFO */
+
+.game-info h4 {
+    margin: 0 0 8px;
+
+    font-size: 17px;
+}
+
+.game-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.game-badge {
+    padding: 6px 9px;
+    border-radius: 9px;
+
+    font-size: 12px;
 }
