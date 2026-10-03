@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Explore from "./pages/Explore";
 import Profile from "./pages/Profile";
 import Connections from "./pages/Connections";
+import Login from "./pages/Login";
 
 function App() {
     return (
@@ -11,10 +12,11 @@ function App() {
             <Navbar />
 
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/home" element={<Home />} />
                 <Route path="/explore" element={<Explore />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/connections" element={<Connections />} />
+                <Route path="/" element={<Login />} />
             </Routes>
         </BrowserRouter>
     );
