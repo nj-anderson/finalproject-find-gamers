@@ -5,11 +5,14 @@ import Explore from "./pages/Explore";
 import Profile from "./pages/Profile";
 import Connections from "./pages/Connections";
 import Login from "./pages/Login";
+import ConditionalWrapper from "./components/conditionalwrapper";
 
 function App() {
     return (
         <BrowserRouter>
-            <Navbar />
+            <ConditionalWrapper>
+                <Navbar />
+            </ConditionalWrapper>
 
             <Routes>
                 <Route path="/home" element={<Home />} />
