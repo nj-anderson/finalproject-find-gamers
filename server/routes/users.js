@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const User = require("../models/User");
+const Connection = require("../models/Connection");
 
 const router = express.Router();
 
@@ -8,6 +9,8 @@ const router = express.Router();
     GET ALL USERS
 
     Used by the Explore page.
+    Gamertags are left out; they are only
+    revealed to accepted connections.
 */
 router.get("/", async (req, res) => {
 
@@ -15,7 +18,7 @@ router.get("/", async (req, res) => {
 
         const users = await User
             .find()
-            .select("-password");
+            .select("-password -gamertags");
 
         res.json(users);
 
@@ -39,6 +42,10 @@ router.get("/", async (req, res) => {
     GET ONE USER
 
     Used when opening somebody's profile.
+
+    Gamertags are only included if the viewer
+    (x-user-id, temporary until login is done)
+    is this user or an accepted connection.
 */
 
 router.get("/:id", async (req, res) => {
@@ -69,7 +76,36 @@ router.get("/:id", async (req, res) => {
 
         }
 
-        res.json(user);
+        const currentUserId =
+            req.get("x-user-id");
+
+        let canSeeGamertags =
+            currentUserId === req.params.id;
+
+        if (
+            !canSeeGamertags &&
+            mongoose.isValidObjectId(currentUserId)
+        ) {
+
+            canSeeGamertags = Boolean(
+                await Connection.exists({
+                    status: "accepted",
+                    $or: [
+                        { sender: currentUserId, receiver: req.params.id },
+                        { sender: req.params.id, receiver: currentUserId }
+                    ]
+                })
+            );
+
+        }
+
+        const result = user.toObject();
+
+        if (!canSeeGamertags) {
+            delete result.gamertags;
+        }
+
+        res.json(result);
 
     } catch (error) {
 

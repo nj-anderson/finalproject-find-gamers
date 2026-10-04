@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
+import ConnectButton from "../components/ConnectButton";
 import "../styles/profile.css";
 
 const emptyGame = {
@@ -42,7 +43,13 @@ function Profile() {
         setLoading(true);
         setError("");
 
-        fetch(`/api/users/${viewedUserId}`)
+        // Tells the server who is viewing, so gamertags
+        // are only sent to this user or their connections.
+        fetch(`/api/users/${viewedUserId}`, {
+            headers: currentUserId
+                ? { "x-user-id": currentUserId }
+                : {}
+        })
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Could not load this profile.");
@@ -60,7 +67,23 @@ function Profile() {
                 setError(error.message);
                 setLoading(false);
             });
-    }, [viewedUserId]);
+    }, [viewedUserId, currentUserId]);
+
+    // Reloads the profile without the loading screen,
+    // e.g. after connecting so their gamertags show up
+    function refreshProfile() {
+        fetch(`/api/users/${viewedUserId}`, {
+            headers: { "x-user-id": currentUserId }
+        })
+            .then((response) => (response.ok ? response.json() : null))
+            .then((data) => {
+                if (data) {
+                    setProfile(data);
+                    setForm(normalizeProfile(data));
+                }
+            })
+            .catch((error) => console.error(error));
+    }
 
     const initials = useMemo(() => {
         if (!profile?.username) {
@@ -275,6 +298,15 @@ function Profile() {
                     >
                         Edit Profile
                     </button>
+                )}
+
+                {!isOwnProfile && currentUserId && (
+                    <ConnectButton
+                        key={viewedUserId}
+                        userId={viewedUserId}
+                        currentUserId={currentUserId}
+                        onConnected={refreshProfile}
+                    />
                 )}
 
             </section>
@@ -674,8 +706,12 @@ function Profile() {
 
                                 ))}
 
-                            {!Object.values(
-                                profile.gamertags || {}
+                            {/* The server leaves gamertags out
+                                unless you are connected */}
+                            {!profile.gamertags ? (
+                                <p>Connect with {profile.username} to see their gamertags.</p>
+                            ) : !Object.values(
+                                profile.gamertags
                             ).some(Boolean) && (
                                 <p>No gamertags listed yet.</p>
                             )}

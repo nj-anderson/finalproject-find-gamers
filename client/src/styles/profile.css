@@ -444,3 +444,55 @@
         width: auto;
     }
 }
+/* CONNECT BUTTON (other users' profiles) */
+
+.connect-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.connect-actions button:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.connect-status {
+    padding: 10px 14px;
+
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+
+    font-weight: 700;
+    text-decoration: none;
+}
+
+a.connect-status:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.connect-error {
+    flex-basis: 100%;
+    margin: 0;
+
+    color: #ffb4b4;
+    font-size: 14px;
+    text-align: right;
+}
+
+@media (max-width: 700px) {
+
+    .connect-actions {
+        width: 100%;
+        justify-content: stretch;
+    }
+
+    .connect-actions > * {
+        flex: 1;
+        text-align: center;
+    }
+
+}

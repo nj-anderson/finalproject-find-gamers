@@ -149,6 +149,78 @@ router.get("/pending", async (req, res) => {
 
 
 /*
+    GET STATUS WITH ONE USER
+
+    Used by the Connect button on a profile.
+
+    status is one of:
+        "none"      - no request either way
+        "sent"      - you sent them a request
+        "received"  - they sent you a request
+        "connected" - request was accepted
+*/
+
+router.get("/status/:userId", async (req, res) => {
+
+    try {
+
+        const me = req.currentUserId;
+        const { userId } = req.params;
+
+        if (!mongoose.isValidObjectId(userId)) {
+
+            return res.status(400).json({
+                message: "Invalid user id"
+            });
+
+        }
+
+        const connection = await Connection.findOne({
+            $or: [
+                { sender: me, receiver: userId },
+                { sender: userId, receiver: me }
+            ]
+        });
+
+        if (!connection) {
+
+            return res.json({
+                status: "none",
+                connectionId: null
+            });
+
+        }
+
+        let status = "connected";
+
+        if (connection.status === "pending") {
+            status = connection.sender.equals(me)
+                ? "sent"
+                : "received";
+        }
+
+        res.json({
+            status,
+            connectionId: connection._id
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Error fetching connection status:",
+            error
+        );
+
+        res.status(500).json({
+            message: "Failed to fetch connection status"
+        });
+
+    }
+
+});
+
+
+/*
     SEND REQUEST
 
     Body: { receiverId }
