@@ -34,19 +34,10 @@
     flex-wrap: wrap;
     gap: 12px;
 
-    margin: 20px auto;
-
     width: 90%;
     max-width: 1100px;
-}
 
-/* Make sure NO custom arrow is added outside the selects */
-.filters::before,
-.filters::after,
-.filters select::before,
-.filters select::after {
-    content: none !important;
-    display: none !important;
+    margin: 20px auto;
 }
 
 .filters select {
@@ -67,7 +58,6 @@
     cursor: pointer;
     box-sizing: border-box;
 
-    /* Use the normal browser dropdown arrow */
     appearance: auto;
     -webkit-appearance: menulist;
 }
@@ -77,8 +67,7 @@
 
     border-color: #6848ec;
 
-    box-shadow:
-            0 0 0 2px rgba(104, 72, 236, 0.2);
+    box-shadow: 0 0 0 2px rgba(104, 72, 236, 0.2);
 }
 
 
@@ -99,341 +88,31 @@
 }
 
 
-/* USER CARD */
-
-.user-card {
-    background: white;
-
-    border-radius: 18px;
-    padding: 28px;
-
-    box-shadow:
-            0 8px 24px rgba(20, 25, 45, 0.08);
-
-    width: 100%;
-    min-width: 0;
-
-    box-sizing: border-box;
-}
-
-
-/* TOP SECTION */
-
-.user-card-top {
-    display: flex;
-
-    gap: 14px;
-
-    align-items: flex-start;
-}
-
-
-/* USER INFO */
-
-.user-card-top > div:last-child {
-    flex: 1;
-    min-width: 0;
-}
-
-
-/* PROFILE PICTURE */
-
-.profile-picture {
-    width: 64px;
-    height: 64px;
-
-    flex-shrink: 0;
-
-    border-radius: 50%;
-
-    object-fit: cover;
-}
-
-.online-dot {
-    position: absolute;
-
-    right: 0;
-    bottom: 3px;
-
-    width: 12px;
-    height: 12px;
-
-    background: #20b56b;
-
-    border: 3px solid white;
-
-    border-radius: 50%;
-}
-
-
-/* USER NAME */
-
-.user-name-row {
-    display: flex;
-
-    align-items: flex-start;
-    justify-content: space-between;
-
-    gap: 10px;
-
-    width: 100%;
-}
-
-.user-name-row h2 {
-    margin: 0;
-
-    font-size: 23px;
-    line-height: 1.2;
-
-    min-width: 0;
-}
-
-
-/* LOOKING BADGE */
-
-.looking-badge {
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 6px;
-
-    padding: 7px 10px;
-
-    border-radius: 10px;
-
-    font-size: 11px;
-    font-weight: 600;
-
-    white-space: nowrap;
-
-    flex-shrink: 0;
-}
-
-.looking {
-    background: #d9f7e8;
-    color: #16834e;
-}
-
-.not-looking {
-    background: #fde2e2;
-    color: #c53030;
-}
-
-
-/* REGION */
-
-.user-region {
-    display: flex;
-
-    align-items: center;
-
-    gap: 5px;
-
-    margin: 5px 0 9px;
-
-    color: #64748b;
-
-    font-size: 13px;
-}
-
-
-/* BIO */
-
-.user-bio {
-    margin: 0 0 10px;
-
-    color: #334155;
-
-    font-size: 13px;
-
-    line-height: 1.4;
-}
-
-
-/* PLATFORMS */
-
-.platforms {
-    display: flex;
-
-    flex-wrap: wrap;
-
-    gap: 6px;
-
-    margin-top: 8px;
-}
-
-.platform-badge {
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 5px;
-
-    background: #edf4ff;
-
-    color: #24518a;
-
-    padding: 6px 10px;
-
-    border-radius: 9px;
-
-    font-size: 12px;
-
-    font-weight: 500;
-
-    white-space: nowrap;
-}
-
-.platform-badge svg {
-    flex-shrink: 0;
-}
-
-
-/* GAMES */
-
-.games-section {
-    margin-top: 20px;
-}
-
-.games-section h3 {
-    margin: 0 0 10px;
-
-    font-size: 17px;
-}
-
-
-/* GAME CARD */
-
-.game-card {
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-    background: #f6f8fb;
-
-    border: 1px solid #eef1f5;
-
-    border-radius: 10px;
-
-    padding: 10px;
-
-    margin-bottom: 8px;
-
-    min-width: 0;
-}
-
-
-/* GAME ICON */
-
-.game-icon {
-    width: 48px;
-    height: 48px;
-
-    flex-shrink: 0;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    background: #101827;
-
-    border-radius: 9px;
-
-    color: white;
-}
-
-.game-icon svg {
-    width: 24px;
-    height: 24px;
-}
-
-
-/* GAME INFO */
-
-.game-info {
-    min-width: 0;
-}
-
-.game-info h4 {
-    margin: 0 0 7px;
-
-    font-size: 16px;
-}
-
-
-/* GAME BADGES */
-
-.game-badges {
-    display: flex;
-
-    align-items: center;
-
-    flex-wrap: wrap;
-
-    gap: 14px;
-}
-
-.game-badge {
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 5px;
-
-    padding: 0;
-
-    font-size: 12px;
-
-    line-height: 1.2;
-
-    white-space: nowrap;
-}
-
-.game-badge svg {
-    width: 15px;
-    height: 15px;
-
-    flex-shrink: 0;
-
-    stroke-width: 2;
-}
-
-
 /* RESPONSIVE */
 
 @media (max-width: 650px) {
 
-    /* Filters wrap onto new rows */
+    /* Filters can wrap */
     .filters {
-        flex-wrap: wrap;
         width: 90%;
     }
 
     .filters select {
-        width: 180px;
-        min-width: 180px;
+        width: calc(50% - 6px);
+        min-width: 0;
     }
 
-    /* Cards become one column */
+    /* One card per row */
     .user-card-container {
         grid-template-columns: 1fr;
     }
+}
 
-    /* Header stays aligned with content */
-    .header {
-        width: 90%;
-    }
 
-    /* Looking badge moves below username */
-    .user-name-row {
-        flex-wrap: wrap;
-    }
+@media (max-width: 450px) {
 
-    .looking-badge {
-        width: 60%;
+    /* One filter per row on very small screens */
+    .filters select {
+        width: 100%;
     }
 }
