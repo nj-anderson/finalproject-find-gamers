@@ -1,0 +1,498 @@
+.profile-page {
+    min-height: calc(100vh - 64px);
+    padding: 48px clamp(20px, 6vw, 90px) 70px;
+    background: #f4f6fb;
+    color: #171923;
+}
+
+.profile-hero {
+    max-width: 1050px;
+    margin: 0 auto 24px;
+    padding: 32px;
+
+    background: linear-gradient(
+        135deg,
+        #171923,
+        #30364d
+    );
+
+    color: white;
+    border-radius: 22px;
+
+    display: flex;
+    align-items: center;
+    gap: 24px;
+
+    box-shadow: 0 14px 35px
+        rgba(20, 25, 45, 0.16);
+}
+
+.profile-avatar {
+    width: 112px;
+    height: 112px;
+
+    flex: 0 0 112px;
+
+    border-radius: 50%;
+    overflow: hidden;
+
+    display: grid;
+    place-items: center;
+
+    background: #7c5cff;
+
+    border: 4px solid
+        rgba(255, 255, 255, 0.25);
+
+    font-size: 34px;
+    font-weight: 800;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-heading {
+    flex: 1;
+}
+
+.profile-heading h1 {
+    margin: 3px 0 8px;
+
+    font-size: clamp(
+        30px,
+        4vw,
+        46px
+    );
+}
+
+.profile-heading p {
+    margin: 0;
+    line-height: 1.55;
+    color: #d9ddeb;
+}
+
+.profile-label {
+    font-size: 12px;
+    letter-spacing: 2px;
+    font-weight: 800;
+
+    color: #a99aff !important;
+}
+
+.profile-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+
+    margin-top: 16px;
+
+    font-size: 14px;
+    color: #eef0f7;
+}
+
+.profile-content,
+.profile-edit {
+    max-width: 1050px;
+
+    margin: 0 auto;
+
+    display: grid;
+    gap: 22px;
+}
+
+.profile-card {
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 26px;
+
+    box-shadow: 0 8px 24px
+        rgba(31, 38, 65, 0.08);
+}
+
+.profile-card h2 {
+    margin: 0 0 20px;
+}
+
+.profile-card h3 {
+    margin: 22px 0 10px;
+}
+
+/* GAMES */
+
+.games-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(245px, 1fr)
+        );
+
+    gap: 16px;
+}
+
+.game-card {
+    border: 1px solid #e4e7f0;
+
+    border-radius: 14px;
+
+    padding: 18px;
+
+    background: #fafbff;
+}
+
+.game-title-row {
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 12px;
+}
+
+.game-title-row h3 {
+    margin: 0 0 16px;
+}
+
+.looking-badge {
+    background: #e8fff3;
+    color: #087a46;
+
+    border-radius: 999px;
+
+    padding: 5px 9px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+.game-card dl {
+    margin: 0;
+
+    display: grid;
+
+    grid-template-columns:
+        85px 1fr;
+
+    gap: 8px;
+
+    font-size: 14px;
+}
+
+.game-card dt {
+    color: #747b8f;
+}
+
+.game-card dd {
+    margin: 0;
+    font-weight: 600;
+}
+
+/* GAMERTAGS */
+
+.gamertag-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(190px, 1fr)
+        );
+
+    gap: 12px;
+}
+
+.gamertag {
+    border: 1px solid #e4e7f0;
+
+    border-radius: 12px;
+
+    padding: 14px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.gamertag span {
+    text-transform: capitalize;
+
+    color: #737a8d;
+
+    font-size: 12px;
+}
+
+/* FORM */
+
+.profile-form-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 18px;
+}
+
+.profile-form-grid label {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    color: #555d70;
+}
+
+.profile-form-grid input,
+.profile-form-grid textarea {
+    width: 100%;
+
+    border: 1px solid #d8dce8;
+
+    border-radius: 10px;
+
+    padding: 12px 13px;
+
+    font: inherit;
+
+    color: #171923;
+
+    background: #fff;
+}
+
+.profile-form-grid input:focus,
+.profile-form-grid textarea:focus {
+    outline: 2px solid #7c5cff;
+
+    border-color: transparent;
+}
+
+.profile-full {
+    grid-column: 1 / -1;
+}
+
+/* PLATFORMS */
+
+.platform-options {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+}
+
+.platform-check {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    border: 1px solid #e0e3ed;
+
+    border-radius: 999px;
+
+    padding: 8px 12px;
+
+    font-size: 13px;
+}
+
+/* EDIT GAMES */
+
+.profile-section-heading {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.game-editor {
+    border: 1px solid #e3e6ef;
+
+    border-radius: 14px;
+
+    padding: 18px;
+
+    margin-top: 14px;
+}
+
+.game-editor-bottom {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-top: 14px;
+}
+
+/* BUTTONS */
+
+.profile-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 12px;
+}
+
+.profile-primary,
+.profile-secondary,
+.danger-button {
+    border: 0;
+
+    border-radius: 10px;
+
+    padding: 11px 17px;
+
+    font: inherit;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.profile-primary {
+    background: #7c5cff;
+    color: white;
+}
+
+.profile-primary:hover {
+    background: #6848ec;
+}
+
+.profile-secondary {
+    background: #eceef5;
+    color: #282d3d;
+}
+
+.danger-button {
+    background: #fff0f0;
+    color: #b32828;
+}
+
+/* MESSAGES */
+
+.profile-alert {
+    max-width: 1050px;
+
+    margin: 0 auto 20px;
+
+    border-radius: 12px;
+
+    padding: 13px 16px;
+}
+
+.profile-alert.success {
+    background: #e8fff3;
+    color: #087a46;
+}
+
+.profile-alert.error {
+    background: #fff0f0;
+    color: #a92222;
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .profile-page {
+        padding: 28px 16px 50px;
+    }
+
+    .profile-hero {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        padding: 24px;
+    }
+
+    .profile-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-full {
+        grid-column: auto;
+    }
+
+    .profile-primary {
+        width: 100%;
+    }
+
+    .profile-actions .profile-primary {
+        width: auto;
+    }
+}
+/* CONNECT BUTTON (other users' profiles) */
+
+.connect-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.connect-actions button:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.connect-status {
+    padding: 10px 14px;
+
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+
+    font-weight: 700;
+    text-decoration: none;
+}
+
+a.connect-status:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.connect-error {
+    flex-basis: 100%;
+    margin: 0;
+
+    color: #ffb4b4;
+    font-size: 14px;
+    text-align: right;
+}
+
+@media (max-width: 700px) {
+
+    .connect-actions {
+        width: 100%;
+        justify-content: stretch;
+    }
+
+    .connect-actions > * {
+        flex: 1;
+        text-align: center;
+    }
+
+}

@@ -16,6 +16,14 @@ const connectionSchema = new mongoose.Schema({
         enum: ["pending", "accepted"],
         default: "pending"
     }
+}, {
+    timestamps: true
 });
+
+// Only one request per sender/receiver pair
+connectionSchema.index(
+    { sender: 1, receiver: 1 },
+    { unique: true }
+);
 
 module.exports = mongoose.model("Connection", connectionSchema);
