@@ -1,0 +1,139 @@
+/* FILTER SELECT */
+
+.filter-select {
+    position: relative;
+    width: 180px;
+    flex-shrink: 0;
+}
+
+
+/* BUTTON */
+
+.filter-select-button {
+    width: 100%;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 14px;
+
+    background: white;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 14px;
+    color: #252936;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+}
+
+.filter-select-button:hover {
+    border-color: #b8beca;
+}
+
+.filter-select-open {
+    border-color: #6848ec;
+
+    box-shadow: 0 0 0 2px rgba(104, 72, 236, 0.2);
+}
+
+
+/* ARROW */
+
+.filter-chevron {
+    flex-shrink: 0;
+
+    transition: transform 0.15s ease;
+}
+
+.filter-chevron-open {
+    transform: rotate(180deg);
+}
+
+
+/* DROPDOWN */
+
+.filter-options {
+    position: absolute;
+
+    top: calc(100% + 6px);
+    left: 0;
+
+    width: 100%;
+
+    background: white;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    padding: 5px;
+
+    box-sizing: border-box;
+
+    box-shadow: 0 8px 20px rgba(20, 25, 45, 0.12);
+
+    z-index: 100;
+}
+
+
+/* OPTIONS */
+
+.filter-option {
+    width: 100%;
+
+    display: block;
+
+    padding: 10px 10px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: transparent;
+
+    text-align: left;
+
+    font-family: inherit;
+    font-size: 14px;
+    color: #252936;
+
+    cursor: pointer;
+}
+
+.filter-option:hover {
+    background: #f5f6fb;
+}
+
+.filter-option-selected {
+    background: #f1edff;
+    color: #6848ec;
+    font-weight: 600;
+}
+
+
+/* FILTER ROW */
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    margin: 20px auto;
+
+    width: 90%;
+    max-width: 1100px;
+}
+
+
+/* SMALL SCREENS */
+
+@media (max-width: 650px) {
+    .filter-select {
+        width: 180px;
+    }
+}

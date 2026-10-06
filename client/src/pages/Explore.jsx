@@ -1,20 +1,19 @@
 import { useEffect, useState } from "react";
 import "../styles/explore.css";
 import UserCard from "../components/UserCard.jsx";
-import { ChevronDown } from "lucide-react";
+import FilterSelect from "../components/FilterSelect.jsx";
 
 function Explore() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-
     // Stores filtered users
     const [gameFilter, setGameFilter] = useState("");
     const [regionFilter, setRegionFilter] = useState("");
     const [platformFilter, setPlatformFilter] = useState("");
 
-    // Filtering logic into stored array
+    // Filtering logic
     const filteredUsers = users.filter((user) => {
         const matchesGame =
             !gameFilter ||
@@ -62,50 +61,55 @@ function Explore() {
             {/* FILTERS */}
             <div className="filters">
 
-                <div className="select-wrapper">
-                    <select
-                        value={gameFilter}
-                        onChange={(e) => setGameFilter(e.target.value)}
-                    >
-                        <option value="">All Games</option>
-                        <option value="Valorant">Valorant</option>
-                        <option value="Minecraft">Minecraft</option>
-                        <option value="Rocket League">Rocket League</option>
-                        <option value="Overwatch 2">Overwatch 2</option>
-                    </select>
+                <FilterSelect
+                    value={gameFilter}
+                    onChange={setGameFilter}
+                    options={[
+                        { value: "", label: "All Games" },
+                        { value: "Valorant", label: "Valorant" },
+                        { value: "Minecraft", label: "Minecraft" },
+                        {
+                            value: "Rocket League",
+                            label: "Rocket League"
+                        },
+                        {
+                            value: "Overwatch 2",
+                            label: "Overwatch 2"
+                        }
+                    ]}
+                />
 
-                    <ChevronDown size={18} />
-                </div>
+                <FilterSelect
+                    value={regionFilter}
+                    onChange={setRegionFilter}
+                    options={[
+                        { value: "", label: "All Regions" },
+                        {
+                            value: "North America East",
+                            label: "North America East"
+                        },
+                        {
+                            value: "North America West",
+                            label: "North America West"
+                        }
+                    ]}
+                />
 
-                <div className="select-wrapper">
-                    <select
-                        value={regionFilter}
-                        onChange={(e) => setRegionFilter(e.target.value)}
-                    >
-                        <option value="">All Regions</option>
-                        <option value="North America East">North America East</option>
-                        <option value="North America West">North America West</option>
-                    </select>
-
-                    <ChevronDown size={18} />
-                </div>
-
-                <div className="select-wrapper">
-                    <select
-                        value={platformFilter}
-                        onChange={(e) => setPlatformFilter(e.target.value)}
-                    >
-                        <option value="">All Platforms</option>
-                        <option value="PC">PC</option>
-                        <option value="PlayStation">PlayStation</option>
-                        <option value="Xbox">Xbox</option>
-                    </select>
-
-                    <ChevronDown size={18} />
-                </div>
+                <FilterSelect
+                    value={platformFilter}
+                    onChange={setPlatformFilter}
+                    options={[
+                        { value: "", label: "All Platforms" },
+                        { value: "PC", label: "PC" },
+                        {
+                            value: "PlayStation",
+                            label: "PlayStation"
+                        },
+                        { value: "Xbox", label: "Xbox" }
+                    ]}
+                />
 
             </div>
-
 
             {/* USERS */}
             {loading && <p>Loading gamers...</p>}
@@ -115,10 +119,14 @@ function Explore() {
             {!loading && !error && (
                 <div className="user-card-container">
                     {filteredUsers.map((user) => (
-                        <UserCard key={user._id} user={user} />
+                        <UserCard
+                            key={user._id}
+                            user={user}
+                        />
                     ))}
                 </div>
             )}
+
         </main>
     );
 }

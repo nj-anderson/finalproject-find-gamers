@@ -33,56 +33,52 @@
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
+
     margin: 20px auto;
+
     width: 90%;
     max-width: 1100px;
 }
 
-.select-wrapper {
-    position: relative;
-    width: 180px;
+/* Make sure NO custom arrow is added outside the selects */
+.filters::before,
+.filters::after,
+.filters select::before,
+.filters select::after {
+    content: none !important;
+    display: none !important;
 }
 
-.select-wrapper select {
-    width: 100%;
-    box-sizing: border-box;
+.filters select {
+    width: 180px;
+    min-width: 180px;
 
-    padding: 10px 40px 10px 14px;
+    padding: 10px 14px;
 
-    border: 1px solid #d7dce5;
-    border-radius: 9px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
 
     background: white;
-    color: #252936;
 
-    font-size: 14px;
     font-family: inherit;
+    font-size: 14px;
+    color: #252936;
 
     cursor: pointer;
+    box-sizing: border-box;
 
-    /* REMOVE BROWSER ARROW */
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-}
-
-.select-wrapper svg {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-
-    width: 18px;
-    height: 18px;
-
-    color: #252936;
-    pointer-events: none;
+    /* Use the normal browser dropdown arrow */
+    appearance: auto;
+    -webkit-appearance: menulist;
 }
 
 .filters select:focus {
     outline: none;
+
     border-color: #6848ec;
-    box-shadow: 0 0 0 2px rgba(104, 72, 236, 0.2);
+
+    box-shadow:
+            0 0 0 2px rgba(104, 72, 236, 0.2);
 }
 
 
@@ -91,11 +87,8 @@
 .user-card-container {
     display: grid;
 
-    /*
-     * Automatically changes between columns based
-     * on how much room each card needs.
-     */
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns:
+        repeat(auto-fit, minmax(400px, 1fr));
 
     gap: 20px;
 
@@ -114,10 +107,12 @@
     border-radius: 18px;
     padding: 28px;
 
-    box-shadow: 0 8px 24px rgba(20, 25, 45, 0.08);
+    box-shadow:
+            0 8px 24px rgba(20, 25, 45, 0.08);
 
     width: 100%;
     min-width: 0;
+
     box-sizing: border-box;
 }
 
@@ -126,7 +121,9 @@
 
 .user-card-top {
     display: flex;
+
     gap: 14px;
+
     align-items: flex-start;
 }
 
@@ -148,6 +145,7 @@
     flex-shrink: 0;
 
     border-radius: 50%;
+
     object-fit: cover;
 }
 
@@ -163,6 +161,7 @@
     background: #20b56b;
 
     border: 3px solid white;
+
     border-radius: 50%;
 }
 
@@ -171,6 +170,7 @@
 
 .user-name-row {
     display: flex;
+
     align-items: flex-start;
     justify-content: space-between;
 
@@ -193,6 +193,7 @@
 
 .looking-badge {
     display: inline-flex;
+
     align-items: center;
 
     gap: 6px;
@@ -205,6 +206,7 @@
     font-weight: 600;
 
     white-space: nowrap;
+
     flex-shrink: 0;
 }
 
@@ -223,12 +225,15 @@
 
 .user-region {
     display: flex;
+
     align-items: center;
+
     gap: 5px;
 
     margin: 5px 0 9px;
 
     color: #64748b;
+
     font-size: 13px;
 }
 
@@ -239,7 +244,9 @@
     margin: 0 0 10px;
 
     color: #334155;
+
     font-size: 13px;
+
     line-height: 1.4;
 }
 
@@ -248,7 +255,9 @@
 
 .platforms {
     display: flex;
+
     flex-wrap: wrap;
+
     gap: 6px;
 
     margin-top: 8px;
@@ -256,11 +265,13 @@
 
 .platform-badge {
     display: inline-flex;
+
     align-items: center;
 
     gap: 5px;
 
     background: #edf4ff;
+
     color: #24518a;
 
     padding: 6px 10px;
@@ -268,6 +279,7 @@
     border-radius: 9px;
 
     font-size: 12px;
+
     font-weight: 500;
 
     white-space: nowrap;
@@ -295,6 +307,7 @@
 
 .game-card {
     display: flex;
+
     align-items: center;
 
     gap: 12px;
@@ -302,9 +315,11 @@
     background: #f6f8fb;
 
     border: 1px solid #eef1f5;
+
     border-radius: 10px;
 
     padding: 10px;
+
     margin-bottom: 8px;
 
     min-width: 0;
@@ -320,6 +335,7 @@
     flex-shrink: 0;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -353,6 +369,7 @@
 
 .game-badges {
     display: flex;
+
     align-items: center;
 
     flex-wrap: wrap;
@@ -362,6 +379,7 @@
 
 .game-badge {
     display: inline-flex;
+
     align-items: center;
 
     gap: 5px;
@@ -369,6 +387,7 @@
     padding: 0;
 
     font-size: 12px;
+
     line-height: 1.2;
 
     white-space: nowrap;
@@ -381,4 +400,40 @@
     flex-shrink: 0;
 
     stroke-width: 2;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 650px) {
+
+    /* Filters wrap onto new rows */
+    .filters {
+        flex-wrap: wrap;
+        width: 90%;
+    }
+
+    .filters select {
+        width: 180px;
+        min-width: 180px;
+    }
+
+    /* Cards become one column */
+    .user-card-container {
+        grid-template-columns: 1fr;
+    }
+
+    /* Header stays aligned with content */
+    .header {
+        width: 90%;
+    }
+
+    /* Looking badge moves below username */
+    .user-name-row {
+        flex-wrap: wrap;
+    }
+
+    .looking-badge {
+        width: 60%;
+    }
 }
