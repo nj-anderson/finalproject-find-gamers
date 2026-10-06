@@ -1,3 +1,4 @@
+{/* SYLING USER CARDS INTO GRID */}
 .user-card-container {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -5,4 +6,22 @@
     width: 90%;
     max-width: 1600px;
     margin: 0 auto;
+}
+
+
+{/* STYLING THE FILTERING */}
+.filters {
+    display: flex;
+    gap: 12px;
+    margin: 20px auto;
+    width: 90%;
+}
+
+.filters select {
+    padding: 10px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: white;
+    font-size: 14px;
+    cursor: pointer;
 }
