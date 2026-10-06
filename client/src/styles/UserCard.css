@@ -113,12 +113,12 @@
     flex-shrink: 0;
 }
 
-.looking {
+.looking-badge.looking {
     background: #d9f7e8;
     color: #16834e;
 }
 
-.not-looking {
+.looking-badge.not-looking {
     background: #fde2e2;
     color: #c53030;
 }
