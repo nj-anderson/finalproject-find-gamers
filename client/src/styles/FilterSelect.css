@@ -2,7 +2,7 @@
 
 .filter-select {
     position: relative;
-    width: 180px;
+    width: 200px;
     flex-shrink: 0;
 }
 
@@ -25,7 +25,8 @@
     border-radius: 8px;
 
     font-family: inherit;
-    font-size: 14px;
+    font-size: 14px;;
+    font-weight: 550;
     color: #252936;
 
     cursor: pointer;
