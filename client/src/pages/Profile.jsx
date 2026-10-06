@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Gamepad2, MapPin } from "lucide-react";
 import ConnectButton from "../components/ConnectButton";
 import "../styles/profile.css";
 
@@ -277,11 +278,12 @@ function Profile() {
                     <div className="profile-meta">
 
                         <span>
-                            📍 {profile.region || "No region"}
+                            <MapPin size={16} aria-hidden="true" />
+                            {profile.region || "No region"}
                         </span>
 
                         <span>
-                            🎮{" "}
+                            <Gamepad2 size={16} aria-hidden="true" />
                             {profile.platforms.length
                                 ? profile.platforms.join(" · ")
                                 : "No platforms listed"}

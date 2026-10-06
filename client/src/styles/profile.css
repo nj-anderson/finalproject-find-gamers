@@ -93,6 +93,17 @@
     color: #eef0f7;
 }
 
+.profile-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.profile-meta svg {
+    flex: 0 0 auto;
+    color: #a996ff;
+}
+
 .profile-content,
 .profile-edit {
     max-width: 1050px;
@@ -460,6 +471,11 @@
 }
 
 .connect-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
     padding: 10px 14px;
 
     border-radius: 10px;

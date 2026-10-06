@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Check } from "lucide-react";
 
 /*
     Connect button shown on another user's profile.
@@ -139,7 +140,8 @@ function ConnectButton({ userId, currentUserId, onConnected }) {
 
             {status === "connected" && (
                 <Link to="/connections" className="connect-status">
-                    ✓ Connected
+                    <Check size={18} aria-hidden="true" />
+                    Connected
                 </Link>
             )}
 

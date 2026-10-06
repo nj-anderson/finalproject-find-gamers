@@ -134,7 +134,16 @@
 }
 
 .connection-games {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
     overflow-wrap: anywhere;
+}
+
+.connection-games svg {
+    flex: 0 0 auto;
+    color: #7c5cff;
 }
 
 .connection-date {

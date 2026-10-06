@@ -71,7 +71,7 @@ function UserCard({ user }) {
                     <div className="game-card" key={game._id}>
 
                         <div className="game-icon">
-                            🎮
+                            <Gamepad2 />
                         </div>
 
                         <div className="game-info">

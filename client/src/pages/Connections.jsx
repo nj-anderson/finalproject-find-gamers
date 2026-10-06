@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Gamepad2 } from "lucide-react";
 import "../styles/connections.css";
 
 const GAMERTAG_LABELS = {
@@ -305,7 +306,8 @@ function UserSummary({ user }) {
 
                 {gameNames.length > 0 && (
                     <p className="connection-games">
-                        🎮 {gameNames.join(" · ")}
+                        <Gamepad2 size={15} aria-hidden="true" />
+                        {gameNames.join(" · ")}
                     </p>
                 )}
             </div>
