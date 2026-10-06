@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "../styles/explore.css";
 import UserCard from "../components/UserCard.jsx";
+import { ChevronDown } from "lucide-react";
 
 function Explore() {
     const [users, setUsers] = useState([]);
@@ -51,41 +52,58 @@ function Explore() {
     }, []);
 
     return (
-        <main>
-            <h1>Explore Gamers</h1>
-            <p>Search for gamers to play with.</p>
+        <main className="explore-page">
+
+            <div className="header">
+                <h1>Explore Gamers</h1>
+                <p>Search for gamers to play with.</p>
+            </div>
 
             {/* FILTERS */}
             <div className="filters">
-                <select
-                    value={gameFilter}
-                    onChange={(e) => setGameFilter(e.target.value)}
-                >
-                    <option value="">All Games</option>
-                    <option value="Valorant">Valorant</option>
-                    <option value="Minecraft">Minecraft</option>
-                    <option value="Rocket League">Rocket League</option>
-                    <option value="Overwatch 2">Overwatch 2</option>
-                </select>
 
-                <select
-                    value={regionFilter}
-                    onChange={(e) => setRegionFilter(e.target.value)}
-                >
-                    <option value="">All Regions</option>
-                    <option value="North America East">North America East</option>
-                    <option value="North America West">North America West</option>
-                </select>
+                <div className="select-wrapper">
+                    <select
+                        value={gameFilter}
+                        onChange={(e) => setGameFilter(e.target.value)}
+                    >
+                        <option value="">All Games</option>
+                        <option value="Valorant">Valorant</option>
+                        <option value="Minecraft">Minecraft</option>
+                        <option value="Rocket League">Rocket League</option>
+                        <option value="Overwatch 2">Overwatch 2</option>
+                    </select>
 
-                <select
-                    value={platformFilter}
-                    onChange={(e) => setPlatformFilter(e.target.value)}
-                >
-                    <option value="">All Platforms</option>
-                    <option value="PC">PC</option>
-                    <option value="PlayStation">PlayStation</option>
-                    <option value="Xbox">Xbox</option>
-                </select>
+                    <ChevronDown size={18} />
+                </div>
+
+                <div className="select-wrapper">
+                    <select
+                        value={regionFilter}
+                        onChange={(e) => setRegionFilter(e.target.value)}
+                    >
+                        <option value="">All Regions</option>
+                        <option value="North America East">North America East</option>
+                        <option value="North America West">North America West</option>
+                    </select>
+
+                    <ChevronDown size={18} />
+                </div>
+
+                <div className="select-wrapper">
+                    <select
+                        value={platformFilter}
+                        onChange={(e) => setPlatformFilter(e.target.value)}
+                    >
+                        <option value="">All Platforms</option>
+                        <option value="PC">PC</option>
+                        <option value="PlayStation">PlayStation</option>
+                        <option value="Xbox">Xbox</option>
+                    </select>
+
+                    <ChevronDown size={18} />
+                </div>
+
             </div>
 
 

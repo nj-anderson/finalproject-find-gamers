@@ -1,28 +1,102 @@
+/* EXPLORE PAGE */
+
+.explore-page {
+    background: #f5f6fb;
+    min-height: calc(100vh - 64px);
+    padding: 45px 0;
+}
+
+.explore-container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.explore-container h1 {
+    margin: 0 0 8px;
+    font-size: 32px;
+    color: #171925;
+}
+
+.explore-container > p {
+    margin: 0 0 28px;
+    color: #64748b;
+}
+
+
+/* FILTERS */
+
+.filters {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.filters select {
+    padding: 10px 14px;
+    border: 1px solid #d7dce5;
+    border-radius: 9px;
+    background: white;
+    font-size: 14px;
+    color: #252936;
+}
+
+
+/* CARD GRID */
+
+.user-card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 20px;
+
+    width: 90%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+
+/* USER CARD */
+
 .user-card {
     background: white;
-    border: 1px solid #e1e5eb;
-    border-radius: 14px;
-    padding: 18px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+
+    border-radius: 18px;
+    padding: 28px;
+
+    box-shadow: 0 8px 24px rgba(20, 25, 45, 0.08);
 
     width: 100%;
     min-width: 0;
     box-sizing: border-box;
 }
 
+
 /* TOP SECTION */
 
 .user-card-top {
     display: flex;
-    gap: 16px;
+    gap: 14px;
     align-items: flex-start;
 }
 
-/* Profile picture */
+/*
+ * The last div is the user information section.
+ * Make it fill the remaining space without
+ * stretching the profile picture container.
+ */
+.user-card-top > div:last-child {
+    flex: 1;
+    min-width: 0;
+}
+
+
+/* PROFILE PICTURE */
 
 .profile-picture {
-    width: 80px;
-    height: 80px;
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+
     border-radius: 50%;
     object-fit: cover;
 }
@@ -40,40 +114,43 @@
     border-radius: 50%;
 }
 
+
 /* USER INFO */
 
 .user-name-row {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 12px;
+
+    gap: 10px;
+    width: 100%;
 }
 
 .user-name-row h2 {
     margin: 0;
-    font-size: 28px;
+
+    font-size: 23px;
+    line-height: 1.2;
+
+    min-width: 0;
 }
 
+
+/* LOOKING BADGE */
+
 .looking-badge {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
 
-    padding: 10px 14px;
-    border-radius: 10px;
-
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.looking-badge {
-    background: #d9f7e8;
-    color: #16834e;
     padding: 7px 10px;
     border-radius: 10px;
 
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
+
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .looking {
@@ -86,37 +163,48 @@
     color: #c53030;
 }
 
+
+/* REGION */
+
 .user-region {
-    margin: 4px 0 10px;
+    margin: 5px 0 9px;
+
     color: #64748b;
     font-size: 13px;
 }
 
+
+/* BIO */
+
 .user-bio {
-    margin: 0 0 12px;
+    margin: 0 0 10px;
+
     color: #334155;
     font-size: 13px;
+    line-height: 1.4;
 }
+
 
 /* PLATFORMS */
 
 .platforms {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 10px;
+    gap: 6px;
+
+    margin-top: 8px;
 }
 
 .platform-badge {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
 
     background: #edf4ff;
     color: #24518a;
 
-    padding: 7px 12px;
-    border-radius: 10px;
+    padding: 6px 10px;
+    border-radius: 9px;
 
     font-size: 12px;
     font-weight: 500;
@@ -128,34 +216,43 @@
     flex-shrink: 0;
 }
 
+
 /* GAMES */
 
 .games-section {
-    margin-top: 22px;
+    margin-top: 20px;
 }
 
 .games-section h3 {
     margin: 0 0 10px;
+
     font-size: 17px;
 }
+
+
+/* GAME CARD */
 
 .game-card {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
 
     background: #f6f8fb;
+    border: 1px solid #eef1f5;
     border-radius: 10px;
 
     padding: 10px;
     margin-bottom: 8px;
+
+    min-width: 0;
 }
+
 
 /* GAME ICON */
 
 .game-icon {
-    width: 55px;
-    height: 55px;
+    width: 48px;
+    height: 48px;
 
     flex-shrink: 0;
 
@@ -166,26 +263,100 @@
     background: #101827;
     border-radius: 9px;
 
-    font-size: 24px;
+    color: white;
 }
+
+.game-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
 
 /* GAME INFO */
 
-.game-info h4 {
-    margin: 0 0 8px;
-
-    font-size: 17px;
+.game-info {
+    min-width: 0;
 }
+
+.game-info h4 {
+    margin: 0 0 7px;
+
+    font-size: 16px;
+}
+
+
+/* GAME BADGES */
 
 .game-badges {
     display: flex;
+    align-items: center;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 14px;
 }
 
 .game-badge {
-    padding: 6px 9px;
-    border-radius: 9px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    padding: 0;
+    border-radius: 0;
 
     font-size: 12px;
+    line-height: 1.2;
+
+    white-space: nowrap;
+}
+
+.game-badge svg {
+    width: 15px;
+    height: 15px;
+
+    flex-shrink: 0;
+
+    stroke-width: 2;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+    .user-card-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+    .user-card-container {
+        grid-template-columns: 1fr;
+    }
+
+    .explore-container {
+        width: 94%;
+    }
+}
+
+{/* Make the looking badge appear on a new line on small screens*/}
+@media (max-width: 1000px) {
+    .user-name-row {
+        flex-wrap: wrap;
+    }
+
+    .looking-badge {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+{/* Make the filter drop downs wrap to new line on small screens */}
+@media (max-width: 700px) {
+    .filters {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .filters select {
+        width: 45%;
+        box-sizing: border-box;
+    }
 }

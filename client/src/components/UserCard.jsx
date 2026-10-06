@@ -1,5 +1,5 @@
 import "../styles/UserCard.css";
-import { Users, MapPin, Monitor, Gamepad2 } from "lucide-react";
+import { Users, MapPin, Monitor, Gamepad2, Gem, Crosshair, ChartNoAxesColumn} from "lucide-react";
 
 function UserCard({ user }) {
     return (
@@ -81,19 +81,22 @@ function UserCard({ user }) {
 
                                 {game.rank && (
                                     <span className="game-badge rank-badge">
-                                        💎 {game.rank}
+                                        <Gem size={14} />
+                                        {game.rank}
                                     </span>
                                 )}
 
                                 {game.role && (
                                     <span className="game-badge role-badge">
-                                        🎯 {game.role}
+                                        <Crosshair size={14} />
+                                        {game.role}
                                     </span>
                                 )}
 
                                 {game.playstyle && (
                                     <span className="game-badge playstyle-badge">
-                                        📊 {game.playstyle}
+                                        <ChartNoAxesColumn size={14} />
+                                        {game.playstyle}
                                     </span>
                                 )}
 
