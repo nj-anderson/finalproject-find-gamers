@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import "../styles/FilterSelect.css";
 
-function FilterSelect({ value, onChange, options }) {
+function FilterSelect({ value, onChange, options, ...props }) {
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef(null);
 
@@ -34,6 +34,8 @@ function FilterSelect({ value, onChange, options }) {
                     open ? "filter-select-open" : ""
                 }`}
                 onClick={() => setOpen(!open)}
+                aria-label={props["aria-label"]}
+                aria-expanded={open}
             >
                 <span>{selectedOption.label}</span>
 
@@ -42,6 +44,7 @@ function FilterSelect({ value, onChange, options }) {
                     className={`filter-chevron ${
                         open ? "filter-chevron-open" : ""
                     }`}
+                    aria-hidden="true"
                 />
             </button>
 

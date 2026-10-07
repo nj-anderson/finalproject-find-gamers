@@ -62,6 +62,7 @@ function Explore() {
             <div className="filters">
 
                 <FilterSelect
+                    aria-label={"Filter gamers by game"}
                     value={gameFilter}
                     onChange={setGameFilter}
                     options={[
@@ -80,6 +81,7 @@ function Explore() {
                 />
 
                 <FilterSelect
+                    aria-label={"Filter gamers by region"}
                     value={regionFilter}
                     onChange={setRegionFilter}
                     options={[
@@ -96,6 +98,7 @@ function Explore() {
                 />
 
                 <FilterSelect
+                    aria-label={"Filters gamers by platform"}
                     value={platformFilter}
                     onChange={setPlatformFilter}
                     options={[
