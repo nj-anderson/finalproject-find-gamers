@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { Gamepad2 } from "lucide-react";
+import { Check, Copy, Crosshair, Gamepad2, Gem, Users } from "lucide-react";
 import "../styles/connections.css";
 
 const GAMERTAG_LABELS = {
@@ -15,22 +15,31 @@ function Connections() {
     // Login should save the logged-in user's MongoDB _id here.
     const currentUserId = localStorage.getItem("currentUserId");
 
+    // The current user's own games, used for "You both play"
+    const [myGames, setMyGames] = useState([]);
+
     const [pending, setPending] = useState([]);
+    const [sent, setSent] = useState([]);
     const [connections, setConnections] = useState([]);
+    const [suggestions, setSuggestions] = useState([]);
+
     const [loading, setLoading] = useState(Boolean(currentUserId));
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
 
-    // Id of the request/connection currently being updated,
+    // Id of the card currently being updated,
     // so its buttons can be disabled while we wait
     const [busyId, setBusyId] = useState(null);
+
+    const headers = { "x-user-id": currentUserId };
 
     // Sends a request to the connections API as the current user
     async function api(path, options = {}) {
         const response = await fetch(`/api/connections${path}`, {
             ...options,
             headers: {
-                "x-user-id": currentUserId
+                ...headers,
+                "Content-Type": "application/json"
             }
         });
 
@@ -50,17 +59,30 @@ function Connections() {
 
         const headers = { "x-user-id": currentUserId };
 
-        Promise.all([
-            fetch("/api/connections/pending", { headers }),
-            fetch("/api/connections", { headers })
-        ])
-            .then(async ([pendingResponse, connectionsResponse]) => {
-                if (!pendingResponse.ok || !connectionsResponse.ok) {
+        const urls = [
+            `/api/users/${currentUserId}`,
+            "/api/connections/pending",
+            "/api/connections/sent",
+            "/api/connections",
+            "/api/connections/suggestions"
+        ];
+
+        Promise.all(urls.map((url) => fetch(url, { headers })))
+            .then(async (responses) => {
+                if (responses.some((response) => !response.ok)) {
                     throw new Error("Could not load your connections.");
                 }
 
-                setPending(await pendingResponse.json());
-                setConnections(await connectionsResponse.json());
+                const [me, pending, sent, connections, suggestions] =
+                    await Promise.all(
+                        responses.map((response) => response.json())
+                    );
+
+                setMyGames(me.games || []);
+                setPending(pending);
+                setSent(sent);
+                setConnections(connections);
+                setSuggestions(suggestions);
                 setLoading(false);
             })
             .catch((error) => {
@@ -70,23 +92,27 @@ function Connections() {
             });
     }, [currentUserId]);
 
-    async function acceptRequest(request) {
-        setBusyId(request._id);
+    // Someone removed or declined may be a good suggestion again
+    async function reloadSuggestions() {
+        try {
+            setSuggestions(await api("/suggestions"));
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    /*
+        Runs one card action: disables its buttons, clears old
+        messages and shows the result.
+    */
+    async function runAction(id, action, successMessage) {
+        setBusyId(id);
         setError("");
         setMessage("");
 
         try {
-            // Response includes the sender's gamertags now that we're connected
-            const connection = await api(`/${request._id}/accept`, {
-                method: "PATCH"
-            });
-
-            setPending((old) =>
-                old.filter((item) => item._id !== request._id)
-            );
-            setConnections((old) => [connection, ...old]);
-
-            setMessage(`You are now connected with ${request.user.username}!`);
+            await action();
+            setMessage(successMessage);
         } catch (error) {
             setError(error.message);
         }
@@ -94,27 +120,49 @@ function Connections() {
         setBusyId(null);
     }
 
-    async function declineRequest(request) {
-        setBusyId(request._id);
-        setError("");
-        setMessage("");
+    function acceptRequest(request) {
+        return runAction(
+            request._id,
+            async () => {
+                // Response includes their gamertags now that we're connected
+                const connection = await api(`/${request._id}/accept`, {
+                    method: "PATCH"
+                });
 
-        try {
-            await api(`/${request._id}`, { method: "DELETE" });
-
-            setPending((old) =>
-                old.filter((item) => item._id !== request._id)
-            );
-
-            setMessage(`Declined ${request.user.username}'s request.`);
-        } catch (error) {
-            setError(error.message);
-        }
-
-        setBusyId(null);
+                setPending((old) => old.filter((item) => item._id !== request._id));
+                setConnections((old) => [connection, ...old]);
+            },
+            `You are now connected with ${request.user.username}!`
+        );
     }
 
-    async function removeConnection(connection) {
+    function declineRequest(request) {
+        return runAction(
+            request._id,
+            async () => {
+                await api(`/${request._id}`, { method: "DELETE" });
+
+                setPending((old) => old.filter((item) => item._id !== request._id));
+                await reloadSuggestions();
+            },
+            `Declined ${request.user.username}'s request.`
+        );
+    }
+
+    function cancelRequest(request) {
+        return runAction(
+            request._id,
+            async () => {
+                await api(`/${request._id}`, { method: "DELETE" });
+
+                setSent((old) => old.filter((item) => item._id !== request._id));
+                await reloadSuggestions();
+            },
+            `Cancelled your request to ${request.user.username}.`
+        );
+    }
+
+    function removeConnection(connection) {
         const confirmed = window.confirm(
             `Remove ${connection.user.username} from your connections?`
         );
@@ -123,23 +171,37 @@ function Connections() {
             return;
         }
 
-        setBusyId(connection._id);
-        setError("");
-        setMessage("");
+        return runAction(
+            connection._id,
+            async () => {
+                await api(`/${connection._id}`, { method: "DELETE" });
 
-        try {
-            await api(`/${connection._id}`, { method: "DELETE" });
+                setConnections((old) => old.filter((item) => item._id !== connection._id));
+                await reloadSuggestions();
+            },
+            `Removed ${connection.user.username}.`
+        );
+    }
 
-            setConnections((old) =>
-                old.filter((item) => item._id !== connection._id)
-            );
+    function connectWith(suggestion) {
+        const { user } = suggestion;
 
-            setMessage(`Removed ${connection.user.username}.`);
-        } catch (error) {
-            setError(error.message);
-        }
+        return runAction(
+            user._id,
+            async () => {
+                const request = await api("", {
+                    method: "POST",
+                    body: JSON.stringify({ receiverId: user._id })
+                });
 
-        setBusyId(null);
+                setSuggestions((old) => old.filter((item) => item.user._id !== user._id));
+                setSent((old) => [
+                    { _id: request._id, sentAt: request.createdAt, user },
+                    ...old
+                ]);
+            },
+            `Request sent to ${user.username}.`
+        );
     }
 
     if (!currentUserId) {
@@ -167,6 +229,20 @@ function Connections() {
             <header className="connections-header">
                 <h1>Connections</h1>
                 <p>Manage friend requests and find your teammates' gamertags.</p>
+
+                {/* SUMMARY */}
+                <ul className="connections-summary" aria-label="Summary">
+                    <li>
+                        <strong>{connections.length}</strong>
+                        {connections.length === 1 ? " connection" : " connections"}
+                    </li>
+                    <li>
+                        <strong>{pending.length}</strong> pending
+                    </li>
+                    <li>
+                        <strong>{sent.length}</strong> sent
+                    </li>
+                </ul>
             </header>
 
             {/* Always rendered so screen readers announce new messages */}
@@ -214,6 +290,8 @@ function Connections() {
                             >
                                 <UserSummary user={request.user} />
 
+                                <SharedGames user={request.user} myGames={myGames} />
+
                                 <p className="connection-date">
                                     Sent {formatDate(request.sentAt)}
                                 </p>
@@ -256,7 +334,8 @@ function Connections() {
 
                 {connections.length === 0 ? (
                     <p className="connections-empty">
-                        No connections yet. Find teammates on the{" "}
+                        No connections yet. Connect with a suggested
+                        teammate below, or find more on the{" "}
                         <Link to="/explore">Explore</Link> page.
                     </p>
                 ) : (
@@ -268,6 +347,8 @@ function Connections() {
                                 aria-label={`Connection with ${connection.user.username}`}
                             >
                                 <UserSummary user={connection.user} />
+
+                                <SharedGames user={connection.user} myGames={myGames} />
 
                                 <Gamertags
                                     username={connection.user.username}
@@ -294,6 +375,107 @@ function Connections() {
                     </div>
                 )}
             </section>
+
+            {/* SENT REQUESTS */}
+
+            <section
+                className="connections-section"
+                aria-labelledby="sent-heading"
+            >
+                <h2 id="sent-heading">Sent Requests</h2>
+
+                {sent.length === 0 ? (
+                    <p className="connections-empty">
+                        You haven't sent any requests that are still waiting.
+                    </p>
+                ) : (
+                    <div className="connections-grid">
+                        {sent.map((request) => (
+                            <article
+                                className="connection-card"
+                                key={request._id}
+                                aria-label={`Request to ${request.user.username}`}
+                            >
+                                <UserSummary user={request.user} />
+
+                                <SharedGames user={request.user} myGames={myGames} />
+
+                                <p className="connection-date">
+                                    Sent {formatDate(request.sentAt)} · Waiting for a reply
+                                </p>
+
+                                <div className="connection-actions">
+                                    <button
+                                        type="button"
+                                        className="connections-secondary"
+                                        onClick={() => cancelRequest(request)}
+                                        disabled={busyId === request._id}
+                                        aria-label={`Cancel request to ${request.user.username}`}
+                                    >
+                                        Cancel Request
+                                    </button>
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                )}
+            </section>
+
+            {/* SUGGESTED TEAMMATES */}
+
+            <section
+                className="connections-section"
+                aria-labelledby="suggestions-heading"
+            >
+                <h2 id="suggestions-heading">Suggested Teammates</h2>
+                <p className="connections-subtitle">
+                    Players looking for teammates in games you play.
+                </p>
+
+                {suggestions.length === 0 ? (
+                    <p className="connections-empty">
+                        {myGames.length === 0 ? (
+                            <>
+                                Add games to your{" "}
+                                <Link to="/profile">profile</Link> to get
+                                suggestions.
+                            </>
+                        ) : (
+                            "No suggestions right now. Check back later!"
+                        )}
+                    </p>
+                ) : (
+                    <div className="connections-grid">
+                        {suggestions.map((suggestion) => (
+                            <article
+                                className="connection-card"
+                                key={suggestion.user._id}
+                                aria-label={`Suggested teammate ${suggestion.user.username}`}
+                            >
+                                <UserSummary user={suggestion.user} />
+
+                                <SharedGames
+                                    user={suggestion.user}
+                                    myGames={myGames}
+                                    lookingOnly
+                                />
+
+                                <div className="connection-actions">
+                                    <button
+                                        type="button"
+                                        className="connections-primary"
+                                        onClick={() => connectWith(suggestion)}
+                                        disabled={busyId === suggestion.user._id}
+                                        aria-label={`Connect with ${suggestion.user.username}`}
+                                    >
+                                        Connect
+                                    </button>
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                )}
+            </section>
         </main>
     );
 }
@@ -301,6 +483,7 @@ function Connections() {
 // Avatar, name, region and games for one user
 function UserSummary({ user }) {
     const gameNames = (user.games || []).map((game) => game.name);
+    const isLooking = (user.games || []).some((game) => game.lookingForTeammates);
 
     return (
         <div className="connection-user">
@@ -335,7 +518,67 @@ function UserSummary({ user }) {
                         {gameNames.join(" · ")}
                     </p>
                 )}
+
+                {isLooking && (
+                    <p className="connection-looking">
+                        <Users size={14} aria-hidden="true" />
+                        Looking for teammates
+                    </p>
+                )}
             </div>
+        </div>
+    );
+}
+
+/*
+    "You both play" box: the games this user shares with
+    the current user, with their rank and role in each.
+
+    lookingOnly limits it to games they want teammates for
+    (used for suggestions, to match what the server picked).
+*/
+function SharedGames({ user, myGames, lookingOnly = false }) {
+    const mine = new Set(
+        myGames.map((game) => game.name.trim().toLowerCase())
+    );
+
+    const shared = (user.games || []).filter(
+        (game) =>
+            mine.has(game.name.trim().toLowerCase()) &&
+            (!lookingOnly || game.lookingForTeammates)
+    );
+
+    if (shared.length === 0) {
+        return null;
+    }
+
+    return (
+        <div className="shared-games">
+            <h3 className="shared-games-title">You both play</h3>
+
+            <ul>
+                {shared.map((game) => (
+                    <li key={game._id || game.name}>
+                        <strong>{game.name}</strong>
+
+                        {game.rank && (
+                            <span className="shared-badge">
+                                <Gem size={13} aria-hidden="true" />
+                                <span className="sr-only">Rank: </span>
+                                {game.rank}
+                            </span>
+                        )}
+
+                        {game.role && (
+                            <span className="shared-badge">
+                                <Crosshair size={13} aria-hidden="true" />
+                                <span className="sr-only">Role: </span>
+                                {game.role}
+                            </span>
+                        )}
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 }
@@ -357,13 +600,66 @@ function Gamertags({ username, gamertags }) {
             className="connection-gamertags"
             aria-label={`${username}'s gamertags`}
         >
-            {listed.map(([type, value]) => (
-                <div key={type}>
-                    <dt>{GAMERTAG_LABELS[type] || type}</dt>
-                    <dd>{value}</dd>
-                </div>
-            ))}
+            {listed.map(([type, value]) => {
+                const label = GAMERTAG_LABELS[type] || type;
+
+                return (
+                    <div key={type}>
+                        <dt>{label}</dt>
+                        <dd>
+                            <span className="gamertag-value">{value}</span>
+
+                            <CopyButton
+                                value={value}
+                                label={`Copy ${username}'s ${label}: ${value}`}
+                            />
+                        </dd>
+                    </div>
+                );
+            })}
         </dl>
+    );
+}
+
+// Copies a gamertag to the clipboard and briefly shows a check mark
+function CopyButton({ value, label }) {
+    const [copied, setCopied] = useState(false);
+    const timer = useRef(null);
+
+    useEffect(() => () => clearTimeout(timer.current), []);
+
+    async function copy() {
+        try {
+            await navigator.clipboard.writeText(value);
+
+            setCopied(true);
+            clearTimeout(timer.current);
+            timer.current = setTimeout(() => setCopied(false), 2000);
+        } catch (error) {
+            console.error("Could not copy:", error);
+        }
+    }
+
+    return (
+        <>
+            <button
+                type="button"
+                className={`copy-button${copied ? " copied" : ""}`}
+                onClick={copy}
+                aria-label={label}
+                title={copied ? "Copied!" : "Copy"}
+            >
+                {copied ? (
+                    <Check size={15} aria-hidden="true" />
+                ) : (
+                    <Copy size={15} aria-hidden="true" />
+                )}
+            </button>
+
+            <span className="sr-only" role="status">
+                {copied ? "Copied" : ""}
+            </span>
+        </>
     );
 }
 

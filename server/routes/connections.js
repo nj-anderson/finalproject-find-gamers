@@ -149,6 +149,149 @@ router.get("/pending", async (req, res) => {
 
 
 /*
+    GET SENT REQUESTS
+
+    Outgoing requests the other user
+    has not answered yet.
+*/
+
+router.get("/sent", async (req, res) => {
+
+    try {
+
+        const requests = await Connection
+            .find({
+                sender: req.currentUserId,
+                status: "pending"
+            })
+            .populate("receiver", PUBLIC_FIELDS)
+            .sort({ createdAt: -1 });
+
+        const result = requests
+            .filter((request) => request.receiver)
+            .map((request) => ({
+                _id: request._id,
+                sentAt: request.createdAt,
+                user: request.receiver
+            }));
+
+        res.json(result);
+
+    } catch (error) {
+
+        console.error(
+            "Error fetching sent requests:",
+            error
+        );
+
+        res.status(500).json({
+            message: "Failed to fetch sent requests"
+        });
+
+    }
+
+});
+
+
+/*
+    GET SUGGESTED TEAMMATES
+
+    Players the current user has no connection or
+    request with, who are looking for teammates in
+    a game the current user also plays.
+
+    Sorted by how many games they share.
+*/
+
+const MAX_SUGGESTIONS = 6;
+
+router.get("/suggestions", async (req, res) => {
+
+    try {
+
+        const me = req.currentUserId;
+
+        const currentUser = await User
+            .findById(me)
+            .select("games");
+
+        if (!currentUser) {
+
+            return res.status(404).json({
+                message: "User not found"
+            });
+
+        }
+
+        // Game names are compared without caring about capitals
+        const myGames = new Set(
+            currentUser.games.map((game) =>
+                game.name.trim().toLowerCase()
+            )
+        );
+
+        if (myGames.size === 0) {
+            return res.json([]);
+        }
+
+        // Skip anyone already connected or with a request either way
+        const existing = await Connection.find({
+            $or: [
+                { sender: me },
+                { receiver: me }
+            ]
+        });
+
+        const excludedIds = existing.map((connection) =>
+            connection.sender.equals(me)
+                ? connection.receiver
+                : connection.sender
+        );
+
+        const candidates = await User
+            .find({
+                _id: { $nin: [me, ...excludedIds] },
+                "games.lookingForTeammates": true
+            })
+            .select(PUBLIC_FIELDS);
+
+        const suggestions = candidates
+            .map((user) => ({
+                user,
+                sharedGames: user.games
+                    .filter((game) =>
+                        game.lookingForTeammates &&
+                        myGames.has(game.name.trim().toLowerCase())
+                    )
+                    .map((game) => ({
+                        name: game.name,
+                        rank: game.rank,
+                        role: game.role
+                    }))
+            }))
+            .filter((suggestion) => suggestion.sharedGames.length > 0)
+            .sort((a, b) => b.sharedGames.length - a.sharedGames.length)
+            .slice(0, MAX_SUGGESTIONS);
+
+        res.json(suggestions);
+
+    } catch (error) {
+
+        console.error(
+            "Error fetching suggestions:",
+            error
+        );
+
+        res.status(500).json({
+            message: "Failed to fetch suggestions"
+        });
+
+    }
+
+});
+
+
+/*
     GET STATUS WITH ONE USER
 
     Used by the Connect button on a profile.

@@ -158,11 +158,11 @@
     margin: 0;
 
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: 10px;
 }
 
-.connection-gamertags div {
+.connection-gamertags > div {
     padding: 10px 12px;
 
     border: 1px solid #e4e7f0;
@@ -177,7 +177,150 @@
 .connection-gamertags dd {
     margin: 3px 0 0;
     font-weight: 700;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+.gamertag-value {
+    min-width: 0;
     overflow-wrap: anywhere;
+}
+
+.copy-button {
+    flex: 0 0 auto;
+
+    width: 30px;
+    height: 30px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid #e4e7f0;
+    border-radius: 8px;
+    background: white;
+    color: #5f6577;
+
+    cursor: pointer;
+}
+
+.copy-button:hover {
+    background: #f4f2ff;
+    color: #6848ec;
+}
+
+.copy-button.copied {
+    border-color: #b9ecd2;
+    background: #e8fff3;
+    color: #087a46;
+}
+
+/* SUMMARY ROW */
+
+.connections-summary {
+    margin: 18px 0 0;
+    padding: 0;
+    list-style: none;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.connections-summary li {
+    padding: 8px 14px;
+
+    background: white;
+    border-radius: 999px;
+    box-shadow: 0 4px 12px rgba(20, 25, 45, 0.06);
+
+    color: #5f6577;
+    font-size: 14px;
+}
+
+.connections-summary strong {
+    color: #171923;
+}
+
+.connections-subtitle {
+    margin: -8px 0 16px;
+    color: #5f6577;
+}
+
+/* LOOKING FOR TEAMMATES (matches the Explore badge) */
+
+.connection-info .connection-looking {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    margin-top: 6px;
+    padding: 3px 9px;
+
+    border-radius: 999px;
+    background: #d9f7e8;
+    color: #117443;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* YOU BOTH PLAY */
+
+.shared-games {
+    padding: 12px 14px;
+
+    border-radius: 12px;
+    background: #f4f2ff;
+}
+
+.shared-games-title {
+    margin: 0 0 8px;
+
+    color: #5536d6;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.shared-games ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.shared-games li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+
+    font-size: 14px;
+}
+
+.shared-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+
+    padding: 2px 8px;
+
+    border-radius: 999px;
+    background: white;
+    color: #3d4256;
+
+    font-size: 12px;
+}
+
+.shared-badge svg {
+    color: #6848ec;
 }
 
 /* BUTTONS */
