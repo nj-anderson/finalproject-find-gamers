@@ -306,6 +306,50 @@
     color: #6848ec;
 }
 
+/* FRIEND REQUEST BUTTON */
+
+.friend-request-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    width: 100%;
+
+    margin-top: 18px;
+
+    padding: 10px 16px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #6848ec;
+    color: white;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+            background 0.2s ease,
+            transform 0.1s ease;
+}
+
+.friend-request-button:hover {
+    background: #5938d8;
+}
+
+.friend-request-button:active {
+    transform: scale(0.98);
+}
+
+.friend-request-button svg {
+    flex-shrink: 0;
+}
+
 
 /* RESPONSIVE CARD STYLING */
 

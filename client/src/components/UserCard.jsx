@@ -1,5 +1,5 @@
 import "../styles/UserCard.css";
-import { Users, MapPin, Monitor, Gamepad2, Gem, Crosshair, ChartNoAxesColumn} from "lucide-react";
+import { Users, MapPin, Monitor, Gamepad2, Gem, Crosshair, ChartNoAxesColumn, UserPlus} from "lucide-react";
 
 function UserCard({ user }) {
     return (
@@ -106,6 +106,12 @@ function UserCard({ user }) {
                     </div>
                 ))}
             </div>
+
+            {/* Send Friend Request Button */}
+            <button className="friend-request-button">
+                <UserPlus size={16} />
+                Add Friend
+            </button>
 
         </div>
     );
