@@ -155,7 +155,9 @@ function Connections() {
     if (loading) {
         return (
             <main className="connections-page">
-                <p className="connections-empty">Loading connections...</p>
+                <p className="connections-empty" role="status">
+                    Loading connections...
+                </p>
             </main>
         );
     }
@@ -167,11 +169,14 @@ function Connections() {
                 <p>Manage friend requests and find your teammates' gamertags.</p>
             </header>
 
-            {message && (
-                <div className="connections-alert success" role="status">
-                    {message}
-                </div>
-            )}
+            {/* Always rendered so screen readers announce new messages */}
+            <div role="status" aria-live="polite">
+                {message && (
+                    <div className="connections-alert success">
+                        {message}
+                    </div>
+                )}
+            </div>
 
             {error && (
                 <div className="connections-alert error" role="alert">
@@ -181,12 +186,16 @@ function Connections() {
 
             {/* PENDING REQUESTS */}
 
-            <section className="connections-section">
-                <h2>
+            <section
+                className="connections-section"
+                aria-labelledby="pending-heading"
+            >
+                <h2 id="pending-heading">
                     Pending Requests
                     {pending.length > 0 && (
                         <span className="connections-count">
                             {pending.length}
+                            <span className="sr-only"> waiting</span>
                         </span>
                     )}
                 </h2>
@@ -201,6 +210,7 @@ function Connections() {
                             <article
                                 className="connection-card"
                                 key={request._id}
+                                aria-label={`Request from ${request.user.username}`}
                             >
                                 <UserSummary user={request.user} />
 
@@ -208,12 +218,14 @@ function Connections() {
                                     Sent {formatDate(request.sentAt)}
                                 </p>
 
+                                {/* Labels include the name, since every card has the same buttons */}
                                 <div className="connection-actions">
                                     <button
                                         type="button"
                                         className="connections-primary"
                                         onClick={() => acceptRequest(request)}
                                         disabled={busyId === request._id}
+                                        aria-label={`Accept request from ${request.user.username}`}
                                     >
                                         Accept
                                     </button>
@@ -223,6 +235,7 @@ function Connections() {
                                         className="connections-secondary"
                                         onClick={() => declineRequest(request)}
                                         disabled={busyId === request._id}
+                                        aria-label={`Decline request from ${request.user.username}`}
                                     >
                                         Decline
                                     </button>
@@ -235,8 +248,11 @@ function Connections() {
 
             {/* ACCEPTED CONNECTIONS */}
 
-            <section className="connections-section">
-                <h2>My Connections</h2>
+            <section
+                className="connections-section"
+                aria-labelledby="connections-heading"
+            >
+                <h2 id="connections-heading">My Connections</h2>
 
                 {connections.length === 0 ? (
                     <p className="connections-empty">
@@ -249,10 +265,14 @@ function Connections() {
                             <article
                                 className="connection-card"
                                 key={connection._id}
+                                aria-label={`Connection with ${connection.user.username}`}
                             >
                                 <UserSummary user={connection.user} />
 
-                                <Gamertags gamertags={connection.user.gamertags} />
+                                <Gamertags
+                                    username={connection.user.username}
+                                    gamertags={connection.user.gamertags}
+                                />
 
                                 <p className="connection-date">
                                     Connected {formatDate(connection.connectedAt)}
@@ -264,6 +284,7 @@ function Connections() {
                                         className="danger-link"
                                         onClick={() => removeConnection(connection)}
                                         disabled={busyId === connection._id}
+                                        aria-label={`Remove ${connection.user.username} from your connections`}
                                     >
                                         Remove
                                     </button>
@@ -302,11 +323,15 @@ function UserSummary({ user }) {
                     {user.username}
                 </Link>
 
-                <p>{user.region || "No region"}</p>
+                <p>
+                    <span className="sr-only">Region: </span>
+                    {user.region || "No region"}
+                </p>
 
                 {gameNames.length > 0 && (
                     <p className="connection-games">
                         <Gamepad2 size={15} aria-hidden="true" />
+                        <span className="sr-only">Games: </span>
                         {gameNames.join(" · ")}
                     </p>
                 )}
@@ -316,7 +341,7 @@ function UserSummary({ user }) {
 }
 
 // Gamertags are only sent by the server once a request is accepted
-function Gamertags({ gamertags }) {
+function Gamertags({ username, gamertags }) {
     const listed = Object.entries(gamertags || {}).filter(
         ([, value]) => value
     );
@@ -328,7 +353,10 @@ function Gamertags({ gamertags }) {
     }
 
     return (
-        <dl className="connection-gamertags">
+        <dl
+            className="connection-gamertags"
+            aria-label={`${username}'s gamertags`}
+        >
             {listed.map(([type, value]) => (
                 <div key={type}>
                     <dt>{GAMERTAG_LABELS[type] || type}</dt>

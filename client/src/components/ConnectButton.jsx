@@ -15,7 +15,7 @@ import { Check } from "lucide-react";
     onConnected is called after accepting, so the profile
     can reload and show the newly revealed gamertags.
 */
-function ConnectButton({ userId, currentUserId, onConnected }) {
+function ConnectButton({ userId, username, currentUserId, onConnected }) {
     const [status, setStatus] = useState(null);
     const [connectionId, setConnectionId] = useState(null);
     const [busy, setBusy] = useState(false);
@@ -77,16 +77,24 @@ function ConnectButton({ userId, currentUserId, onConnected }) {
     }
 
     if (!status) {
-        return error ? <p className="connect-error">{error}</p> : null;
+        return error ? (
+            <p className="connect-error" role="alert">{error}</p>
+        ) : null;
     }
 
+    // Labels include the username so screen readers say who the action is for
     return (
-        <div className="connect-actions">
+        <div
+            className="connect-actions"
+            aria-live="polite"
+            aria-busy={busy}
+        >
             {status === "none" && (
                 <button
                     type="button"
                     className="profile-primary"
                     disabled={busy}
+                    aria-label={`Connect with ${username}`}
                     onClick={() =>
                         run("", "POST", { receiverId: userId }, "sent")
                     }
@@ -103,6 +111,7 @@ function ConnectButton({ userId, currentUserId, onConnected }) {
                         type="button"
                         className="profile-secondary"
                         disabled={busy}
+                        aria-label={`Cancel request to ${username}`}
                         onClick={() =>
                             run(`/${connectionId}`, "DELETE", null, "none")
                         }
@@ -118,6 +127,7 @@ function ConnectButton({ userId, currentUserId, onConnected }) {
                         type="button"
                         className="profile-primary"
                         disabled={busy}
+                        aria-label={`Accept request from ${username}`}
                         onClick={() =>
                             run(`/${connectionId}/accept`, "PATCH", null, "connected")
                         }
@@ -129,6 +139,7 @@ function ConnectButton({ userId, currentUserId, onConnected }) {
                         type="button"
                         className="profile-secondary"
                         disabled={busy}
+                        aria-label={`Decline request from ${username}`}
                         onClick={() =>
                             run(`/${connectionId}`, "DELETE", null, "none")
                         }
@@ -139,13 +150,19 @@ function ConnectButton({ userId, currentUserId, onConnected }) {
             )}
 
             {status === "connected" && (
-                <Link to="/connections" className="connect-status">
+                <Link
+                    to="/connections"
+                    className="connect-status"
+                    aria-label={`Connected with ${username}. View your connections`}
+                >
                     <Check size={18} aria-hidden="true" />
                     Connected
                 </Link>
             )}
 
-            {error && <p className="connect-error">{error}</p>}
+            {error && (
+                <p className="connect-error" role="alert">{error}</p>
+            )}
         </div>
     );
 }

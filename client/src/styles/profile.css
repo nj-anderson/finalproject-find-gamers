@@ -93,7 +93,7 @@
     color: #eef0f7;
 }
 
-.profile-meta span {
+.profile-meta > span {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -199,7 +199,7 @@
 }
 
 .game-card dt {
-    color: #747b8f;
+    color: #5f6577;
 }
 
 .game-card dd {
@@ -238,7 +238,7 @@
 .gamertag span {
     text-transform: capitalize;
 
-    color: #737a8d;
+    color: #5f6577;
 
     font-size: 12px;
 }
@@ -383,12 +383,12 @@
 }
 
 .profile-primary {
-    background: #7c5cff;
+    background: #6848ec;
     color: white;
 }
 
 .profile-primary:hover {
-    background: #6848ec;
+    background: #5536d6;
 }
 
 .profile-secondary {

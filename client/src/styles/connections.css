@@ -45,7 +45,7 @@
     padding: 3px 9px;
 
     border-radius: 999px;
-    background: #7c5cff;
+    background: #6848ec;
     color: white;
 
     font-size: 13px;
@@ -54,7 +54,7 @@
 
 .connections-empty {
     margin: 0;
-    color: #737a8d;
+    color: #5f6577;
 }
 
 .connections-empty a {
@@ -99,7 +99,7 @@
     display: grid;
     place-items: center;
 
-    background: #7c5cff;
+    background: #6848ec;
     color: white;
 
     font-weight: 800;
@@ -148,7 +148,7 @@
 
 .connection-date {
     margin: 0;
-    color: #737a8d;
+    color: #5f6577;
     font-size: 13px;
 }
 
@@ -170,7 +170,7 @@
 }
 
 .connection-gamertags dt {
-    color: #737a8d;
+    color: #5f6577;
     font-size: 12px;
 }
 
@@ -203,12 +203,12 @@
 
 .connections-primary {
     flex: 1;
-    background: #7c5cff;
+    background: #6848ec;
     color: white;
 }
 
 .connections-primary:hover {
-    background: #6848ec;
+    background: #5536d6;
 }
 
 .connections-secondary {

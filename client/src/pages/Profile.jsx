@@ -279,11 +279,13 @@ function Profile() {
 
                         <span>
                             <MapPin size={16} aria-hidden="true" />
+                            <span className="sr-only">Region: </span>
                             {profile.region || "No region"}
                         </span>
 
                         <span>
                             <Gamepad2 size={16} aria-hidden="true" />
+                            <span className="sr-only">Platforms: </span>
                             {profile.platforms.length
                                 ? profile.platforms.join(" · ")
                                 : "No platforms listed"}
@@ -306,6 +308,7 @@ function Profile() {
                     <ConnectButton
                         key={viewedUserId}
                         userId={viewedUserId}
+                        username={profile.username}
                         currentUserId={currentUserId}
                         onConnected={refreshProfile}
                     />
