@@ -8,33 +8,55 @@ function Navbar() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // Number of incoming friend requests, shown as a badge on Connections
-    const [pendingCount, setPendingCount] = useState(0);
+    // Number of incoming friend requests, shown as a badge on Connections.
+    // Saved with the user it belongs to, so switching accounts never
+    // shows the previous user's count.
+    const [pending, setPending] = useState({ userId: null, count: 0 });
+
+    const userId = user?._id;
 
     useEffect(() => {
-        if (!user) {
+        if (!userId) {
             return;
         }
 
         function loadPendingCount() {
             fetch("/api/connections/pending")
                 .then((response) => (response.ok ? response.json() : []))
-                .then((requests) => setPendingCount(requests.length))
-                .catch(() => setPendingCount(0));
+                .then((requests) => setPending({ userId, count: requests.length }))
+                .catch(() => {});
+        }
+
+        // Check again when coming back to this tab
+        function handleVisibilityChange() {
+            if (document.visibilityState === "visible") {
+                loadPendingCount();
+            }
         }
 
         loadPendingCount();
 
+        // Requests from other people can arrive at any time, so check
+        // every 10 seconds while the tab is open
+        const interval = setInterval(() => {
+            if (document.visibilityState === "visible") {
+                loadPendingCount();
+            }
+        }, 10000);
+
         // Fired after accepting or declining, so the badge updates right away
         window.addEventListener("connections-changed", loadPendingCount);
+        document.addEventListener("visibilitychange", handleVisibilityChange);
 
         return () => {
+            clearInterval(interval);
             window.removeEventListener("connections-changed", loadPendingCount);
+            document.removeEventListener("visibilitychange", handleVisibilityChange);
         };
-    }, [user, location.pathname]);
+    }, [userId, location.pathname]);
 
-    // Never show an old count after logging out
-    const badgeCount = user ? pendingCount : 0;
+    // Never show an old count after logging out or switching accounts
+    const badgeCount = pending.userId === userId ? pending.count : 0;
 
     // Ends the session on the server, then goes back to Login
     async function handleLogout() {
