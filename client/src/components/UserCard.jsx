@@ -1,6 +1,16 @@
 import { useState } from "react";
 import "../styles/UserCard.css";
-import { Users, MapPin, Monitor, Gamepad2, Gem, Crosshair, ChartNoAxesColumn, UserPlus, Check} from "lucide-react";
+import {
+    Users,
+    MapPin,
+    Monitor,
+    Gamepad2,
+    Gem,
+    Crosshair,
+    ChartNoAxesColumn,
+    UserPlus,
+    Check
+} from "lucide-react";
 import useAuth from "../auth/useAuth";
 
 function UserCard({ user }) {
@@ -19,8 +29,12 @@ function UserCard({ user }) {
         try {
             const response = await fetch("/api/connections", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ receiverId: user._id })
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    receiverId: user._id
+                })
             });
 
             const data = await response.json();
@@ -75,20 +89,11 @@ function UserCard({ user }) {
 
                     <div className="user-name-row">
                         <h2>{user.username}</h2>
-
-                        {user.games?.some(game => game.lookingForTeammates) ? (
-                            <span className="looking-badge looking">
-                                <Users size={16} /> Looking for teammates
-                            </span>
-                        ) : (
-                            <span className="looking-badge not-looking">
-                                <Users size={16} />  Not looking for teammates
-                            </span>
-                        )}
                     </div>
 
                     <p className="user-region">
-                        <MapPin size={16} /> {user.region}
+                        <MapPin size={16} />
+                        {user.region}
                     </p>
 
                     <p className="user-bio">
@@ -124,8 +129,27 @@ function UserCard({ user }) {
                         </div>
 
                         <div className="game-info">
-                            <h4>{game.name}</h4>
 
+                            {/* Game name + looking status */}
+                            <div className="game-name-row">
+
+                                <h4>{game.name}</h4>
+
+                                {game.lookingForTeammates ? (
+                                    <span className="game-looking-badge looking">
+                                        <Users size={14} aria-hidden="true" />
+                                        Looking for teammates
+                                    </span>
+                                ) : (
+                                    <span className="game-looking-badge not-looking">
+                                        <Users size={14} aria-hidden="true" />
+                                        Not looking for teammates
+                                    </span>
+                                )}
+
+                            </div>
+
+                            {/* Game details */}
                             <div className="game-badges">
 
                                 {game.rank && (
@@ -174,6 +198,7 @@ function UserCard({ user }) {
                     ) : (
                         <UserPlus size={16} aria-hidden="true" />
                     )}
+
                     {requestResult || "Add Friend"}
                 </button>
             )}
