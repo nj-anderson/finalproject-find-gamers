@@ -13,19 +13,65 @@ function Explore() {
     const [regionFilter, setRegionFilter] = useState("");
     const [platformFilter, setPlatformFilter] = useState("");
 
+    // Get filter options from the database
+    const gameOptions = [
+        ...new Map(
+            users
+                .flatMap((user) => user.games || [])
+                .filter((game) => game.name)
+                .map((game) => [
+                    game.name.trim().toLowerCase(),
+                    game.name.trim()
+                ])
+        ).values()
+    ].sort();
+
+    const regionOptions = [
+        ...new Map(
+            users
+                .map((user) => user.region)
+                .filter(Boolean)
+                .map((region) => [
+                    region.trim().toLowerCase(),
+                    region.trim()
+                ])
+        ).values()
+    ].sort();
+
+    const platformOptions = [
+        ...new Map(
+            users
+                .flatMap((user) => user.platforms || [])
+                .filter(Boolean)
+                .map((platform) => [
+                    platform.trim().toLowerCase(),
+                    platform.trim()
+                ])
+        ).values()
+    ].sort();
+
     // Filtering logic
     const filteredUsers = users.filter((user) => {
         const matchesGame =
             !gameFilter ||
-            user.games.some((game) => game.name === gameFilter);
+            (user.games || []).some(
+                (game) =>
+                    game.name?.trim().toLowerCase() ===
+                    gameFilter.trim().toLowerCase()
+            );
 
         const matchesRegion =
             !regionFilter ||
-            user.region === regionFilter;
+            user.region?.trim().toLowerCase() ===
+            regionFilter.trim().toLowerCase();
 
         const matchesPlatform =
             !platformFilter ||
-            user.platforms.includes(platformFilter);
+            (user.platforms || []).some(
+                (platform) =>
+                    platform.trim().toLowerCase() ===
+                    platformFilter.trim().toLowerCase()
+            );
 
         return matchesGame && matchesRegion && matchesPlatform;
     });
@@ -67,16 +113,10 @@ function Explore() {
                     onChange={setGameFilter}
                     options={[
                         { value: "", label: "All Games" },
-                        { value: "Valorant", label: "Valorant" },
-                        { value: "Minecraft", label: "Minecraft" },
-                        {
-                            value: "Rocket League",
-                            label: "Rocket League"
-                        },
-                        {
-                            value: "Overwatch 2",
-                            label: "Overwatch 2"
-                        }
+                        ...gameOptions.map((game) => ({
+                            value: game,
+                            label: game
+                        }))
                     ]}
                 />
 
@@ -86,14 +126,10 @@ function Explore() {
                     onChange={setRegionFilter}
                     options={[
                         { value: "", label: "All Regions" },
-                        {
-                            value: "North America East",
-                            label: "North America East"
-                        },
-                        {
-                            value: "North America West",
-                            label: "North America West"
-                        }
+                        ...regionOptions.map((region) => ({
+                            value: region,
+                            label: region
+                        }))
                     ]}
                 />
 
@@ -103,19 +139,16 @@ function Explore() {
                     onChange={setPlatformFilter}
                     options={[
                         { value: "", label: "All Platforms" },
-                        { value: "PC", label: "PC" },
-                        {
-                            value: "PlayStation",
-                            label: "PlayStation"
-                        },
-                        { value: "Xbox", label: "Xbox" }
+                        ...platformOptions.map((platform) => ({
+                            value: platform,
+                            label: platform
+                        }))
                     ]}
                 />
 
             </div>
 
             {/* USERS */}
-            {loading && <p>Loading gamers...</p>}
 
             {error && <p>{error}</p>}
 
