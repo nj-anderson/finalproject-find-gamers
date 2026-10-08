@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { Check, Copy, Crosshair, Gamepad2, Gem, Users } from "lucide-react";
+import { Check, Copy, Crosshair, Gamepad2, Gem, Inbox, Send, UserSearch, Users } from "lucide-react";
 import useAuth from "../auth/useAuth";
 import "../styles/connections.css";
 
@@ -212,8 +212,10 @@ function Connections() {
     return (
         <main className="connections-page">
             <header className="connections-header">
-                <h1>Connections</h1>
-                <p>Manage friend requests and find your teammates' gamertags.</p>
+                <div>
+                    <h1>Connections</h1>
+                    <p>Manage friend requests and find your teammates' gamertags.</p>
+                </div>
 
                 {/* SUMMARY */}
                 <ul className="connections-summary" aria-label="Summary">
@@ -245,223 +247,254 @@ function Connections() {
                 </div>
             )}
 
-            {/* PENDING REQUESTS */}
+            {/*
+                Two columns on wide screens:
+                left = requests to answer and your connections,
+                right = finding new teammates.
+                On small screens they stack in this same order.
+            */}
+            <div className="connections-layout">
+                <div className="connections-main">
 
-            <section
-                className="connections-section"
-                aria-labelledby="pending-heading"
-            >
-                <h2 id="pending-heading">
-                    Pending Requests
-                    {pending.length > 0 && (
-                        <span className="connections-count">
-                            {pending.length}
-                            <span className="sr-only"> waiting</span>
-                        </span>
-                    )}
-                </h2>
+                    {/* PENDING REQUESTS */}
 
-                {pending.length === 0 ? (
-                    <p className="connections-empty">
-                        No pending requests right now.
-                    </p>
-                ) : (
-                    <div className="connections-grid">
-                        {pending.map((request) => (
-                            <article
-                                className="connection-card"
-                                key={request._id}
-                                aria-label={`Request from ${request.user.username}`}
-                            >
-                                <UserSummary user={request.user} />
+                    <section
+                        className="connections-section"
+                        aria-labelledby="pending-heading"
+                    >
+                        <h2 id="pending-heading">
+                            Pending Requests
+                            {pending.length > 0 && (
+                                <span className="connections-count">
+                                    {pending.length}
+                                    <span className="sr-only"> waiting</span>
+                                </span>
+                            )}
+                        </h2>
 
-                                <SharedGames user={request.user} myGames={myGames} />
-
-                                <p className="connection-date">
-                                    Sent {formatDate(request.sentAt)}
-                                </p>
-
-                                {/* Labels include the name, since every card has the same buttons */}
-                                <div className="connection-actions">
-                                    <button
-                                        type="button"
-                                        className="connections-primary"
-                                        onClick={() => acceptRequest(request)}
-                                        disabled={busyId === request._id}
-                                        aria-label={`Accept request from ${request.user.username}`}
-                                    >
-                                        Accept
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        className="connections-secondary"
-                                        onClick={() => declineRequest(request)}
-                                        disabled={busyId === request._id}
-                                        aria-label={`Decline request from ${request.user.username}`}
-                                    >
-                                        Decline
-                                    </button>
-                                </div>
-                            </article>
-                        ))}
-                    </div>
-                )}
-            </section>
-
-            {/* ACCEPTED CONNECTIONS */}
-
-            <section
-                className="connections-section"
-                aria-labelledby="connections-heading"
-            >
-                <h2 id="connections-heading">My Connections</h2>
-
-                {connections.length === 0 ? (
-                    <p className="connections-empty">
-                        No connections yet. Connect with a suggested
-                        teammate below, or find more on the{" "}
-                        <Link to="/explore">Explore</Link> page.
-                    </p>
-                ) : (
-                    <div className="connections-grid">
-                        {connections.map((connection) => (
-                            <article
-                                className="connection-card"
-                                key={connection._id}
-                                aria-label={`Connection with ${connection.user.username}`}
-                            >
-                                <UserSummary user={connection.user} />
-
-                                <SharedGames user={connection.user} myGames={myGames} />
-
-                                <Gamertags
-                                    username={connection.user.username}
-                                    gamertags={connection.user.gamertags}
-                                />
-
-                                <p className="connection-date">
-                                    Connected {formatDate(connection.connectedAt)}
-                                </p>
-
-                                <div className="connection-actions">
-                                    <button
-                                        type="button"
-                                        className="danger-link"
-                                        onClick={() => removeConnection(connection)}
-                                        disabled={busyId === connection._id}
-                                        aria-label={`Remove ${connection.user.username} from your connections`}
-                                    >
-                                        Remove
-                                    </button>
-                                </div>
-                            </article>
-                        ))}
-                    </div>
-                )}
-            </section>
-
-            {/* SENT REQUESTS */}
-
-            <section
-                className="connections-section"
-                aria-labelledby="sent-heading"
-            >
-                <h2 id="sent-heading">Sent Requests</h2>
-
-                {sent.length === 0 ? (
-                    <p className="connections-empty">
-                        You haven't sent any requests that are still waiting.
-                    </p>
-                ) : (
-                    <div className="connections-grid">
-                        {sent.map((request) => (
-                            <article
-                                className="connection-card"
-                                key={request._id}
-                                aria-label={`Request to ${request.user.username}`}
-                            >
-                                <UserSummary user={request.user} />
-
-                                <SharedGames user={request.user} myGames={myGames} />
-
-                                <p className="connection-date">
-                                    Sent {formatDate(request.sentAt)} · Waiting for a reply
-                                </p>
-
-                                <div className="connection-actions">
-                                    <button
-                                        type="button"
-                                        className="connections-secondary"
-                                        onClick={() => cancelRequest(request)}
-                                        disabled={busyId === request._id}
-                                        aria-label={`Cancel request to ${request.user.username}`}
-                                    >
-                                        Cancel Request
-                                    </button>
-                                </div>
-                            </article>
-                        ))}
-                    </div>
-                )}
-            </section>
-
-            {/* SUGGESTED TEAMMATES */}
-
-            <section
-                className="connections-section"
-                aria-labelledby="suggestions-heading"
-            >
-                <h2 id="suggestions-heading">Suggested Teammates</h2>
-                <p className="connections-subtitle">
-                    Players looking for teammates in games you play.
-                </p>
-
-                {suggestions.length === 0 ? (
-                    <p className="connections-empty">
-                        {myGames.length === 0 ? (
-                            <>
-                                Add games to your{" "}
-                                <Link to="/profile">profile</Link> to get
-                                suggestions.
-                            </>
+                        {pending.length === 0 ? (
+                            <EmptyState icon={Inbox}>
+                                No pending requests right now. When someone wants to
+                                team up with you, it will show up here.
+                            </EmptyState>
                         ) : (
-                            "No suggestions right now. Check back later!"
-                        )}
-                    </p>
-                ) : (
-                    <div className="connections-grid">
-                        {suggestions.map((suggestion) => (
-                            <article
-                                className="connection-card"
-                                key={suggestion.user._id}
-                                aria-label={`Suggested teammate ${suggestion.user.username}`}
-                            >
-                                <UserSummary user={suggestion.user} />
-
-                                <SharedGames
-                                    user={suggestion.user}
-                                    myGames={myGames}
-                                    lookingOnly
-                                />
-
-                                <div className="connection-actions">
-                                    <button
-                                        type="button"
-                                        className="connections-primary"
-                                        onClick={() => connectWith(suggestion)}
-                                        disabled={busyId === suggestion.user._id}
-                                        aria-label={`Connect with ${suggestion.user.username}`}
+                            <div className="connections-grid">
+                                {pending.map((request) => (
+                                    <article
+                                        className="connection-card"
+                                        key={request._id}
+                                        aria-label={`Request from ${request.user.username}`}
                                     >
-                                        Connect
-                                    </button>
-                                </div>
-                            </article>
-                        ))}
-                    </div>
-                )}
-            </section>
+                                        <UserSummary user={request.user} />
+
+                                        <SharedGames user={request.user} myGames={myGames} />
+
+                                        <p className="connection-date">
+                                            Sent {formatDate(request.sentAt)}
+                                        </p>
+
+                                        {/* Labels include the name, since every card has the same buttons */}
+                                        <div className="connection-actions">
+                                            <button
+                                                type="button"
+                                                className="connections-primary"
+                                                onClick={() => acceptRequest(request)}
+                                                disabled={busyId === request._id}
+                                                aria-label={`Accept request from ${request.user.username}`}
+                                            >
+                                                Accept
+                                            </button>
+
+                                            <button
+                                                type="button"
+                                                className="connections-secondary"
+                                                onClick={() => declineRequest(request)}
+                                                disabled={busyId === request._id}
+                                                aria-label={`Decline request from ${request.user.username}`}
+                                            >
+                                                Decline
+                                            </button>
+                                        </div>
+                                    </article>
+                                ))}
+                            </div>
+                        )}
+                    </section>
+
+                    {/* ACCEPTED CONNECTIONS */}
+
+                    <section
+                        className="connections-section"
+                        aria-labelledby="connections-heading"
+                    >
+                        <h2 id="connections-heading">My Connections</h2>
+
+                        {connections.length === 0 ? (
+                            <EmptyState icon={Users}>
+                                No connections yet. Connect with a suggested
+                                teammate, or find more players on the{" "}
+                                <Link to="/explore">Explore</Link> page. Once a
+                                request is accepted, their gamertags appear here.
+                            </EmptyState>
+                        ) : (
+                            <div className="connections-grid">
+                                {connections.map((connection) => (
+                                    <article
+                                        className="connection-card"
+                                        key={connection._id}
+                                        aria-label={`Connection with ${connection.user.username}`}
+                                    >
+                                        <UserSummary user={connection.user} />
+
+                                        <SharedGames user={connection.user} myGames={myGames} />
+
+                                        <Gamertags
+                                            username={connection.user.username}
+                                            gamertags={connection.user.gamertags}
+                                        />
+
+                                        <p className="connection-date">
+                                            Connected {formatDate(connection.connectedAt)}
+                                        </p>
+
+                                        <div className="connection-actions">
+                                            <button
+                                                type="button"
+                                                className="danger-link"
+                                                onClick={() => removeConnection(connection)}
+                                                disabled={busyId === connection._id}
+                                                aria-label={`Remove ${connection.user.username} from your connections`}
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                    </article>
+                                ))}
+                            </div>
+                        )}
+                    </section>
+
+                </div>
+
+                <aside className="connections-side" aria-label="Find teammates">
+
+                    {/* SUGGESTED TEAMMATES */}
+
+                    <section
+                        className="connections-section"
+                        aria-labelledby="suggestions-heading"
+                    >
+                        <h2 id="suggestions-heading">Suggested Teammates</h2>
+                        <p className="connections-subtitle">
+                            Players looking for teammates in games you play.
+                        </p>
+
+                        {suggestions.length === 0 ? (
+                            <EmptyState icon={UserSearch}>
+                                {myGames.length === 0 ? (
+                                    <>
+                                        Add games to your{" "}
+                                        <Link to="/profile">profile</Link> to get
+                                        suggestions.
+                                    </>
+                                ) : (
+                                    <>
+                                        No suggestions right now. Browse everyone on
+                                        the <Link to="/explore">Explore</Link> page.
+                                    </>
+                                )}
+                            </EmptyState>
+                        ) : (
+                            <div className="connections-grid">
+                                {suggestions.map((suggestion) => (
+                                    <article
+                                        className="connection-card"
+                                        key={suggestion.user._id}
+                                        aria-label={`Suggested teammate ${suggestion.user.username}`}
+                                    >
+                                        <UserSummary user={suggestion.user} />
+
+                                        <SharedGames
+                                            user={suggestion.user}
+                                            myGames={myGames}
+                                            lookingOnly
+                                        />
+
+                                        <div className="connection-actions">
+                                            <button
+                                                type="button"
+                                                className="connections-primary"
+                                                onClick={() => connectWith(suggestion)}
+                                                disabled={busyId === suggestion.user._id}
+                                                aria-label={`Connect with ${suggestion.user.username}`}
+                                            >
+                                                Connect
+                                            </button>
+                                        </div>
+                                    </article>
+                                ))}
+                            </div>
+                        )}
+                    </section>
+
+                    {/* SENT REQUESTS */}
+
+                    <section
+                        className="connections-section"
+                        aria-labelledby="sent-heading"
+                    >
+                        <h2 id="sent-heading">Sent Requests</h2>
+
+                        {sent.length === 0 ? (
+                            <EmptyState icon={Send}>
+                                No requests waiting for a reply.
+                            </EmptyState>
+                        ) : (
+                            <div className="connections-grid">
+                                {sent.map((request) => (
+                                    <article
+                                        className="connection-card"
+                                        key={request._id}
+                                        aria-label={`Request to ${request.user.username}`}
+                                    >
+                                        <UserSummary user={request.user} />
+
+                                        <SharedGames user={request.user} myGames={myGames} />
+
+                                        <p className="connection-date">
+                                            Sent {formatDate(request.sentAt)} · Waiting for a reply
+                                        </p>
+
+                                        <div className="connection-actions">
+                                            <button
+                                                type="button"
+                                                className="connections-secondary"
+                                                onClick={() => cancelRequest(request)}
+                                                disabled={busyId === request._id}
+                                                aria-label={`Cancel request to ${request.user.username}`}
+                                            >
+                                                Cancel Request
+                                            </button>
+                                        </div>
+                                    </article>
+                                ))}
+                            </div>
+                        )}
+                    </section>
+
+                </aside>
+            </div>
         </main>
+    );
+}
+
+// Bordered box with an icon, shown when a section has nothing in it
+function EmptyState({ icon: Icon, children }) {
+    return (
+        <div className="connections-empty-box">
+            <Icon size={22} aria-hidden="true" />
+            <p>{children}</p>
+        </div>
     );
 }
 

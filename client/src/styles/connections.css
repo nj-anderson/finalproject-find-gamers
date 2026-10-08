@@ -6,13 +6,20 @@
 }
 
 .connections-page > * {
-    max-width: 1050px;
+    max-width: 1280px;
     margin-left: auto;
     margin-right: auto;
 }
 
+/* Title on the left, summary pills on the right */
 .connections-header {
     margin-bottom: 28px;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px 24px;
 }
 
 .connections-header h1 {
@@ -220,7 +227,7 @@
 /* SUMMARY ROW */
 
 .connections-summary {
-    margin: 18px 0 0;
+    margin: 0;
     padding: 0;
     list-style: none;
 
@@ -395,4 +402,65 @@
 .connections-alert.error {
     background: #fff0f0;
     color: #a92222;
+}
+
+
+/* TWO-COLUMN LAYOUT */
+
+.connections-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
+    gap: 36px;
+    align-items: start;
+}
+
+/* The sidebar is narrow, so its cards stack in one column */
+.connections-side .connections-grid {
+    grid-template-columns: 1fr;
+}
+
+/* Stack the columns on tablets and phones */
+@media (max-width: 960px) {
+
+    .connections-layout {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .connections-side .connections-grid {
+        grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    }
+
+}
+
+/* EMPTY SECTIONS */
+
+.connections-empty-box {
+    padding: 22px;
+
+    border: 2px dashed #d5d9e5;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.6);
+
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+
+    color: #5f6577;
+}
+
+.connections-empty-box svg {
+    flex: 0 0 auto;
+    margin-top: 1px;
+    color: #6848ec;
+}
+
+.connections-empty-box p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.connections-empty-box a {
+    color: #6848ec;
+    font-weight: 700;
 }
