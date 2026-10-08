@@ -53,6 +53,28 @@
     object-fit: cover;
 }
 
+/* DEFAULT PROFILE PICTURE */
+
+.default-profile-picture {
+    width: 64px;
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #7656f5;
+
+    color: white;
+
+    font-size: 24px;
+    font-weight: 700;
+
+    box-sizing: border-box;
+}
+
 .online-dot {
     position: absolute;
 

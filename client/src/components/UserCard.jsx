@@ -53,11 +53,17 @@ function UserCard({ user }) {
 
                 {/* Profile picture */}
                 <div className="profile-picture-container">
-                    <img
-                        className="profile-picture"
-                        src={user.profilePicture || "/images/default-profile.png"}
-                        alt={`${user.username}'s profile`}
-                    />
+                    {user.profilePicture ? (
+                        <img
+                            className="profile-picture"
+                            src={user.profilePicture}
+                            alt={`${user.username}'s profile`}
+                        />
+                    ) : (
+                        <div className="default-profile-picture">
+                            {user.username?.slice(0, 2).toUpperCase()}
+                        </div>
+                    )}
 
                     {user.games?.some(game => game.lookingForTeammates) && (
                         <span className="online-dot"></span>
