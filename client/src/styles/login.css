@@ -1,21 +1,5 @@
-/*
-    Login page, using the same pastel theme as the home page.
-    Full page, since the navbar is hidden here.
-*/
+/* Full page, since the navbar is hidden on the login page */
 .login-page {
-    --home-pink: #ff70a6;
-    --home-purple: #9b7bff;
-    --home-peach: #ffcfb3;
-    --home-mint: #b8f2df;
-
-    /* Darker shades, only for small text, so it stays readable */
-    --login-text: #38334f;
-    --login-muted: #6e6887;
-    --login-error: #b3245f;
-
-    position: relative;
-    overflow: hidden;
-
     min-height: 100vh;
     padding: 40px 16px;
 
@@ -23,31 +7,24 @@
     align-items: center;
     justify-content: center;
 
-    /* Soft pastel glows behind the card */
-    background:
-        radial-gradient(circle at 12% 18%, rgba(255, 112, 166, 0.28), transparent 32%),
-        radial-gradient(circle at 88% 14%, rgba(155, 123, 255, 0.28), transparent 34%),
-        radial-gradient(circle at 82% 86%, rgba(184, 242, 223, 0.55), transparent 36%),
-        radial-gradient(circle at 18% 88%, rgba(255, 207, 179, 0.55), transparent 34%),
-        #fffafc;
-
-    color: var(--login-text);
-    font-family: "Segoe UI", Arial, sans-serif;
+    /* Same gradient as the profile header */
+    background: linear-gradient(
+        135deg,
+        #171923,
+        #30364d
+    );
 }
 
 .login-card {
-    position: relative;
-
     width: 100%;
     max-width: 420px;
     padding: 36px 32px;
 
     background: white;
-    color: var(--login-text);
+    color: #171923;
 
-    border: 1px solid #f6e3ee;
-    border-radius: 24px;
-    box-shadow: 0 18px 45px rgba(155, 123, 255, 0.18);
+    border-radius: 22px;
+    box-shadow: 0 18px 45px rgba(10, 12, 25, 0.35);
 
     display: flex;
     flex-direction: column;
@@ -73,12 +50,8 @@
     display: grid;
     place-items: center;
 
-    border-radius: 14px;
-    background: linear-gradient(
-        135deg,
-        var(--home-pink),
-        var(--home-purple)
-    );
+    border-radius: 12px;
+    background: #6848ec;
     color: white;
 }
 
@@ -89,7 +62,7 @@
 
 .login-subtitle {
     margin: 0 0 22px;
-    color: var(--login-muted);
+    color: #5f6577;
 }
 
 /* FIELDS */
@@ -106,64 +79,49 @@
     margin-bottom: 16px;
     padding: 11px 13px;
 
-    border: 1px solid #eadff0;
-    border-radius: 12px;
-    background: #fffafc;
-    color: var(--login-text);
+    border: 1px solid #d5d9e5;
+    border-radius: 10px;
+    background: white;
+    color: #171923;
 
     font: inherit;
 }
 
-.login-card input::placeholder {
-    color: var(--login-muted);
-}
-
 .login-card input:focus,
 .login-card select:focus {
-    outline: 2px solid var(--home-purple);
+    outline: 2px solid #6848ec;
     outline-offset: 1px;
     border-color: transparent;
-    background: white;
 }
 
 .login-card input[aria-invalid="true"] {
-    border-color: var(--login-error);
+    border-color: #b02525;
 }
 
-/* BUTTON (dark text, since white text is too faint on pink) */
+/* BUTTON */
 
 .login-submit {
     margin-top: 6px;
     padding: 12px 17px;
 
     border: 0;
-    border-radius: 12px;
+    border-radius: 10px;
 
-    background: var(--home-pink);
-    color: var(--login-text);
+    background: #6848ec;
+    color: white;
 
     font: inherit;
     font-weight: 700;
     cursor: pointer;
-
-    box-shadow: 0 6px 16px rgba(255, 112, 166, 0.3);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .login-submit:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 20px rgba(255, 112, 166, 0.4);
-}
-
-.login-submit:focus-visible {
-    outline: 2px solid var(--home-purple);
-    outline-offset: 2px;
+    background: #5536d6;
 }
 
 .login-submit:disabled {
     opacity: 0.7;
     cursor: default;
-    transform: none;
 }
 
 /* MESSAGES */
@@ -172,15 +130,15 @@
     margin-bottom: 16px;
     padding: 11px 14px;
 
-    border-radius: 12px;
-    background: #fff0f5;
-    color: var(--login-error);
+    border-radius: 10px;
+    background: #fff0f0;
+    color: #a92222;
 }
 
 .login-hint {
     margin: 16px 0 0;
 
-    color: var(--login-muted);
+    color: #5f6577;
     font-size: 13px;
     line-height: 1.5;
     text-align: center;
