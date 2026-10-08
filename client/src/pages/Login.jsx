@@ -6,23 +6,24 @@ function Login() {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [region, setRegion] = useState('NA');
     const handleClick = async () => {
         
         if (!username || !password) {
             alert("Please fill in both username and password");
             return;
         }
-        const payload = { username: username, password: password };
+        const payload = { username: username, password: password, region: region };
 
   try {
     // Fire the network request with mandatory Content-Type headers
-    const response = await fetch('/login', {
+    const response = await fetch('/api/users/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json' // CRITICAL: This tells Express to parse it!
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload)
-    });
+});
 
     const data = await response.json();
 
@@ -56,6 +57,13 @@ function Login() {
             <input type="text" id="username" name="username" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)}></input>
             <label htmlFor="password">Username:</label>
             <input type="text" id="password" name="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
+            <label htmlFor="region">Region:</label>
+            <select id="region" value={region} onChange={(e) => setRegion(e.target.value)}>
+                <option value="NA">North America (NA)</option>
+                <option value="EU">Europe (EU)</option>
+                <option value="ASIA">Asia (ASIA)</option>
+                <option value="OCE">Oceania (OCE)</option>
+            </select>
             <button type="button" onClick={handleClick}>Login</button>
         </main>
     );
