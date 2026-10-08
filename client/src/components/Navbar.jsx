@@ -4,7 +4,7 @@ import "../styles/navbar.css";
 function Navbar() {
     return (
         <nav>
-            <Link to="/" className="logo">
+            <Link to="/home" className="logo">
                 Find Gamers
             </Link>
 
@@ -13,6 +13,9 @@ function Navbar() {
                 <Link to="/profile">Profile</Link>
                 <Link to="/connections">Connections</Link>
             </div>
+            <Link to="/" className="button">
+                Logout
+            </Link>
         </nav>
     );
 }

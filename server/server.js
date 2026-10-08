@@ -1,15 +1,19 @@
 const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
-
+const cors = require("cors");
 // API routes
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/users");
 const connectionRoutes = require("./routes/connections");
-
+const accounts = [
+    {username: 'Rashi', password: 'test'}
+]
 const app = express();
 const PORT = process.env.PORT || 3000;
-
+const session = require("express-session");
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(session({ secret: "secret", resave: false, saveUninitialized: true }));
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
