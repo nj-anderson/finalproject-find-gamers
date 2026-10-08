@@ -2,8 +2,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 const User = require("../models/User");
 const Connection = require("../models/Connection");
+const requireAuth = require("../middleware/requireAuth");
 
 const router = express.Router();
+
+// Every users route needs a logged-in user
+router.use(requireAuth);
 
 /*
     GET ALL USERS
@@ -44,7 +48,6 @@ router.get("/", async (req, res) => {
     Used when opening somebody's profile.
 
     Gamertags are only included if the viewer
-    (x-user-id, temporary until login is done)
     is this user or an accepted connection.
 */
 
@@ -77,15 +80,12 @@ router.get("/:id", async (req, res) => {
         }
 
         const currentUserId =
-            req.get("x-user-id");
+            req.currentUserId;
 
         let canSeeGamertags =
             currentUserId === req.params.id;
 
-        if (
-            !canSeeGamertags &&
-            mongoose.isValidObjectId(currentUserId)
-        ) {
+        if (!canSeeGamertags) {
 
             canSeeGamertags = Boolean(
                 await Connection.exists({
@@ -125,30 +125,18 @@ router.get("/:id", async (req, res) => {
 
 /*
     UPDATE PROFILE
-
-    The x-user-id part is temporary until
-    your authentication teammate finishes
-    the login system.
-
-    Later you can replace this with req.user.id.
 */
 
 router.put("/:id", async (req, res) => {
 
     try {
 
-        const currentUserId =
-            req.get("x-user-id");
-
         /*
             Prevent somebody from editing
             another person's profile.
         */
 
-        if (
-            !currentUserId ||
-            currentUserId !== req.params.id
-        ) {
+        if (req.currentUserId !== req.params.id) {
 
             return res.status(403).json({
                 message:
@@ -204,7 +192,7 @@ router.put("/:id", async (req, res) => {
                 },
 
                 {
-                    new: true,
+                    returnDocument: "after",
                     runValidators: true
                 }
 
@@ -243,49 +231,6 @@ router.put("/:id", async (req, res) => {
 
     }
 
-});
-
-// POST /api/users/login
-router.post("/login", async (req, res) => {
-    const { username, password, region } = req.body;
-
-    try {
-        let user = await User.findOne({ username });
-
-        if (!user) {
-            // Create a new user with required fields
-            user = new User({ 
-                username, 
-                password,
-                region: region || "NA" // Default to "NA" if region isn't passed during quick signup
-            });
-            await user.save();
-
-            req.session.login = true;
-            req.session.username = username;
-            return res.json({ success: true, isNewUser: true, message: "New user created!" });
-        }
-
-        // Validate password for existing user
-        if (user.password === password) {
-            req.session.login = true;
-            req.session.username = username;
-            return res.json({ success: true, isNewUser: false, message: "Logged in successfully!" });
-        } else {
-            return res.status(401).json({ success: false, message: "Incorrect password." });
-        }
-    } catch (error) {
-        console.error("Login error:", error);
-
-        if (error.name === "ValidationError") {
-            return res.status(400).json({ 
-                success: false, 
-                message: `Validation Error: ${error.message}` 
-            });
-        }
-
-        return res.status(500).json({ success: false, message: "Server error during login." });
-    }
 });
 
 module.exports = router;

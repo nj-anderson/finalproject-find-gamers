@@ -15,16 +15,14 @@ import { Check } from "lucide-react";
     onConnected is called after accepting, so the profile
     can reload and show the newly revealed gamertags.
 */
-function ConnectButton({ userId, username, currentUserId, onConnected }) {
+function ConnectButton({ userId, username, onConnected }) {
     const [status, setStatus] = useState(null);
     const [connectionId, setConnectionId] = useState(null);
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState("");
 
     useEffect(() => {
-        fetch(`/api/connections/status/${userId}`, {
-            headers: { "x-user-id": currentUserId }
-        })
+        fetch(`/api/connections/status/${userId}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Could not load connection status.");
@@ -40,7 +38,7 @@ function ConnectButton({ userId, username, currentUserId, onConnected }) {
                 console.error(error);
                 setError(error.message);
             });
-    }, [userId, currentUserId]);
+    }, [userId]);
 
     // Runs one connections API call, then moves to the next status
     async function run(path, method, body, nextStatus) {
@@ -51,8 +49,7 @@ function ConnectButton({ userId, username, currentUserId, onConnected }) {
             const response = await fetch(`/api/connections${path}`, {
                 method,
                 headers: {
-                    "Content-Type": "application/json",
-                    "x-user-id": currentUserId
+                    "Content-Type": "application/json"
                 },
                 body: body && JSON.stringify(body)
             });
@@ -64,6 +61,9 @@ function ConnectButton({ userId, username, currentUserId, onConnected }) {
             }
 
             setStatus(nextStatus);
+
+            // Lets the Navbar update its pending-request badge
+            window.dispatchEvent(new Event("connections-changed"));
             setConnectionId(nextStatus === "none" ? null : data._id);
 
             if (nextStatus === "connected" && onConnected) {

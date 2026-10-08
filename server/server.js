@@ -6,14 +6,26 @@ const cors = require("cors");
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/users");
 const connectionRoutes = require("./routes/connections");
-const accounts = [
-    {username: 'Rashi', password: 'test'}
-]
 const app = express();
 const PORT = process.env.PORT || 3000;
 const session = require("express-session");
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
-app.use(session({ secret: "secret", resave: false, saveUninitialized: true }));
+
+// Login sessions. The logged-in user's id is stored in req.session.userId.
+if (!process.env.SESSION_SECRET) {
+    console.warn("SESSION_SECRET is not set in .env; using an insecure development secret.");
+}
+
+app.use(session({
+    secret: process.env.SESSION_SECRET || "find-gamers-dev-secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        sameSite: "lax",
+        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+    }
+}));
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

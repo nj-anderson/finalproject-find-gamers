@@ -380,3 +380,9 @@
         width: 100%;
     }
 }
+.friend-request-button:disabled {
+    background: #e8fff3;
+    color: #087a46;
+    cursor: default;
+    transform: none;
+}

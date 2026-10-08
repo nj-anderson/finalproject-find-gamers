@@ -25,3 +25,40 @@ nav a {
 .nav-links a:hover {
     text-decoration: underline;
 }
+/* Logout button, styled to sit with the nav links */
+nav .button {
+    padding: 7px 14px;
+
+    border: 1px solid #555;
+    border-radius: 8px;
+
+    background: transparent;
+    color: white;
+
+    font: inherit;
+    cursor: pointer;
+}
+
+nav .button:hover {
+    background: #333;
+}
+
+/* Pending friend request badge on the Connections link */
+.nav-connections {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nav-badge {
+    min-width: 20px;
+    padding: 1px 6px;
+
+    border-radius: 999px;
+    background: #6848ec;
+    color: white;
+
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+}

@@ -3,6 +3,7 @@
 // DO NOT RUN THIS SCRIPT UNLESS YOU WANT TO CLEAR YOUR DATABASE AND SEED IT WITH INITIAL DATA
 
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 require("dotenv").config();
 
 const User = require("../models/User");
@@ -151,7 +152,15 @@ async function seedDatabase() {
 
         await User.deleteMany({});
 
-        await User.insertMany(users);
+        // Hash passwords the same way logging in does
+        const hashedUsers = await Promise.all(
+            users.map(async (user) => ({
+                ...user,
+                password: await bcrypt.hash(user.password, 10)
+            }))
+        );
+
+        await User.insertMany(hashedUsers);
 
         console.log(`Added ${users.length} users`);
 

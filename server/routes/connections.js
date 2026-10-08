@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const Connection = require("../models/Connection");
 const User = require("../models/User");
+const requireAuth = require("../middleware/requireAuth");
 
 const router = express.Router();
 
@@ -12,34 +13,8 @@ const PUBLIC_FIELDS = "username profilePicture bio region platforms games";
 const CONNECTED_FIELDS = `${PUBLIC_FIELDS} gamertags`;
 
 
-/*
-    CURRENT USER
-
-    The x-user-id header is temporary until
-    the login system is finished (same as users.js).
-
-*/
-
-router.use((req, res, next) => {
-
-    const currentUserId = req.get("x-user-id");
-
-    if (
-        !currentUserId ||
-        !mongoose.isValidObjectId(currentUserId)
-    ) {
-
-        return res.status(401).json({
-            message: "You must be logged in"
-        });
-
-    }
-
-    req.currentUserId = currentUserId;
-
-    next();
-
-});
+// Every connections route needs a logged-in user
+router.use(requireAuth);
 
 
 /*

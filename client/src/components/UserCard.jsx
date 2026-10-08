@@ -1,7 +1,50 @@
+import { useState } from "react";
 import "../styles/UserCard.css";
-import { Users, MapPin, Monitor, Gamepad2, Gem, Crosshair, ChartNoAxesColumn, UserPlus} from "lucide-react";
+import { Users, MapPin, Monitor, Gamepad2, Gem, Crosshair, ChartNoAxesColumn, UserPlus, Check} from "lucide-react";
+import useAuth from "../auth/useAuth";
 
 function UserCard({ user }) {
+    const { user: currentUser } = useAuth();
+
+    // null = not sent yet, otherwise the text to show on the button
+    const [requestResult, setRequestResult] = useState(null);
+    const [sending, setSending] = useState(false);
+
+    const isMe = currentUser?._id === user._id;
+
+    // Sends a connection request to this user
+    async function sendFriendRequest() {
+        setSending(true);
+
+        try {
+            const response = await fetch("/api/connections", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ receiverId: user._id })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setRequestResult("Request Sent");
+            } else if (response.status === 409) {
+                // Already connected, or a request already exists
+                setRequestResult(
+                    data.message === "You are already connected"
+                        ? "Already Friends"
+                        : "Request Pending"
+                );
+            } else {
+                alert(data.message || "Could not send friend request.");
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Could not send friend request.");
+        }
+
+        setSending(false);
+    }
+
     return (
         <div className="user-card">
 
@@ -107,11 +150,27 @@ function UserCard({ user }) {
                 ))}
             </div>
 
-            {/* Send Friend Request Button */}
-            <button className="friend-request-button">
-                <UserPlus size={16} />
-                Add Friend
-            </button>
+            {/* Send Friend Request Button (not shown on your own card) */}
+            {!isMe && (
+                <button
+                    type="button"
+                    className="friend-request-button"
+                    onClick={sendFriendRequest}
+                    disabled={sending || requestResult !== null}
+                    aria-label={
+                        requestResult
+                            ? `${requestResult}: ${user.username}`
+                            : `Add ${user.username} as a friend`
+                    }
+                >
+                    {requestResult ? (
+                        <Check size={16} aria-hidden="true" />
+                    ) : (
+                        <UserPlus size={16} aria-hidden="true" />
+                    )}
+                    {requestResult || "Add Friend"}
+                </button>
+            )}
 
         </div>
     );

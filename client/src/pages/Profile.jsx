@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Gamepad2, MapPin } from "lucide-react";
 import ConnectButton from "../components/ConnectButton";
+import useAuth from "../auth/useAuth";
 import "../styles/profile.css";
 
 const emptyGame = {
@@ -22,35 +23,23 @@ function Profile() {
     const [message, setMessage] = useState("");
     const [editing, setEditing] = useState(false);
 
-    // Temporary until authentication is finished.
-    // Login should save the logged-in user's MongoDB _id here.
-    const currentUserId = localStorage.getItem("currentUserId");
+    // This page is login-only, so user is always set
+    const { user, setUser } = useAuth();
+    const currentUserId = user._id;
 
     // /profile = your own profile
     // /profile/:userId = another user's profile
     const viewedUserId = userId || currentUserId;
 
-    const isOwnProfile = Boolean(
-        currentUserId && viewedUserId === currentUserId
-    );
+    const isOwnProfile = viewedUserId === currentUserId;
 
     useEffect(() => {
-        if (!viewedUserId) {
-            setLoading(false);
-            setError("Log in to view your profile.");
-            return;
-        }
-
         setLoading(true);
         setError("");
 
-        // Tells the server who is viewing, so gamertags
-        // are only sent to this user or their connections.
-        fetch(`/api/users/${viewedUserId}`, {
-            headers: currentUserId
-                ? { "x-user-id": currentUserId }
-                : {}
-        })
+        // The server uses the login session to decide whether
+        // to include gamertags (only for you or your connections)
+        fetch(`/api/users/${viewedUserId}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Could not load this profile.");
@@ -68,14 +57,12 @@ function Profile() {
                 setError(error.message);
                 setLoading(false);
             });
-    }, [viewedUserId, currentUserId]);
+    }, [viewedUserId]);
 
     // Reloads the profile without the loading screen,
     // e.g. after connecting so their gamertags show up
     function refreshProfile() {
-        fetch(`/api/users/${viewedUserId}`, {
-            headers: { "x-user-id": currentUserId }
-        })
+        fetch(`/api/users/${viewedUserId}`)
             .then((response) => (response.ok ? response.json() : null))
             .then((data) => {
                 if (data) {
@@ -197,8 +184,7 @@ function Profile() {
                     method: "PUT",
 
                     headers: {
-                        "Content-Type": "application/json",
-                        "x-user-id": currentUserId
+                        "Content-Type": "application/json"
                     },
 
                     body: JSON.stringify(form)
@@ -216,6 +202,9 @@ function Profile() {
             setProfile(data);
             setForm(normalizeProfile(data));
             setEditing(false);
+
+            // Keeps the logged-in user up to date (e.g. a new username)
+            setUser(data);
 
             setMessage("Profile saved!");
         } catch (error) {
@@ -304,12 +293,11 @@ function Profile() {
                     </button>
                 )}
 
-                {!isOwnProfile && currentUserId && (
+                {!isOwnProfile && (
                     <ConnectButton
                         key={viewedUserId}
                         userId={viewedUserId}
                         username={profile.username}
-                        currentUserId={currentUserId}
                         onConnected={refreshProfile}
                     />
                 )}

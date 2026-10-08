@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Check, Copy, Crosshair, Gamepad2, Gem, Users } from "lucide-react";
+import useAuth from "../auth/useAuth";
 import "../styles/connections.css";
 
 const GAMERTAG_LABELS = {
@@ -11,9 +12,9 @@ const GAMERTAG_LABELS = {
 };
 
 function Connections() {
-    // Temporary until authentication is finished (same as Profile).
-    // Login should save the logged-in user's MongoDB _id here.
-    const currentUserId = localStorage.getItem("currentUserId");
+    // This page is login-only, so user is always set
+    const { user } = useAuth();
+    const currentUserId = user._id;
 
     // The current user's own games, used for "You both play"
     const [myGames, setMyGames] = useState([]);
@@ -23,7 +24,7 @@ function Connections() {
     const [connections, setConnections] = useState([]);
     const [suggestions, setSuggestions] = useState([]);
 
-    const [loading, setLoading] = useState(Boolean(currentUserId));
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
 
@@ -31,14 +32,11 @@ function Connections() {
     // so its buttons can be disabled while we wait
     const [busyId, setBusyId] = useState(null);
 
-    const headers = { "x-user-id": currentUserId };
-
-    // Sends a request to the connections API as the current user
+    // Sends a request to the connections API as the logged-in user
     async function api(path, options = {}) {
         const response = await fetch(`/api/connections${path}`, {
             ...options,
             headers: {
-                ...headers,
                 "Content-Type": "application/json"
             }
         });
@@ -53,12 +51,6 @@ function Connections() {
     }
 
     useEffect(() => {
-        if (!currentUserId) {
-            return;
-        }
-
-        const headers = { "x-user-id": currentUserId };
-
         const urls = [
             `/api/users/${currentUserId}`,
             "/api/connections/pending",
@@ -67,7 +59,7 @@ function Connections() {
             "/api/connections/suggestions"
         ];
 
-        Promise.all(urls.map((url) => fetch(url, { headers })))
+        Promise.all(urls.map((url) => fetch(url)))
             .then(async (responses) => {
                 if (responses.some((response) => !response.ok)) {
                     throw new Error("Could not load your connections.");
@@ -113,6 +105,9 @@ function Connections() {
         try {
             await action();
             setMessage(successMessage);
+
+            // Lets the Navbar update its pending-request badge
+            window.dispatchEvent(new Event("connections-changed"));
         } catch (error) {
             setError(error.message);
         }
@@ -201,16 +196,6 @@ function Connections() {
                 ]);
             },
             `Request sent to ${user.username}.`
-        );
-    }
-
-    if (!currentUserId) {
-        return (
-            <main className="connections-page">
-                <div className="connections-alert error">
-                    Log in to see your connections.
-                </div>
-            </main>
         );
     }
 
