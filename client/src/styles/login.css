@@ -1,4 +1,3 @@
-/* Full page, since the navbar is hidden on the login page */
 .login-page {
     min-height: 100vh;
     padding: 40px 16px;
@@ -6,13 +5,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
-    /* Same gradient as the profile header */
-    background: linear-gradient(
-        135deg,
-        #171923,
-        #30364d
-    );
+    background: #fffafc;
 }
 
 .login-card {
@@ -21,16 +14,15 @@
     padding: 36px 32px;
 
     background: white;
-    color: #171923;
+    color: #38334f;
 
     border-radius: 22px;
-    box-shadow: 0 18px 45px rgba(10, 12, 25, 0.35);
+    box-shadow: 0 18px 45px rgba(155, 123, 255, 0.12);
 
     display: flex;
     flex-direction: column;
 }
 
-/* BRAND */
 
 .login-brand {
     display: flex;
@@ -41,6 +33,7 @@
 
     font-size: 20px;
     font-weight: 800;
+    color: #38334f;
 }
 
 .login-logo {
@@ -51,27 +44,28 @@
     place-items: center;
 
     border-radius: 12px;
-    background: #6848ec;
+    background: #ff70a6;
     color: white;
 }
 
 .login-card h1 {
     margin: 0 0 4px;
     font-size: 28px;
+    color: #38334f;
 }
 
 .login-subtitle {
     margin: 0 0 22px;
-    color: #5f6577;
+    color: #80768f;
 }
 
-/* FIELDS */
 
 .login-card label {
     margin: 0 0 6px;
 
     font-size: 14px;
     font-weight: 700;
+    color: #38334f;
 }
 
 .login-card input,
@@ -79,26 +73,25 @@
     margin-bottom: 16px;
     padding: 11px 13px;
 
-    border: 1px solid #d5d9e5;
+    border: 1px solid #e7dcff;
     border-radius: 10px;
     background: white;
-    color: #171923;
+    color: #38334f;
 
     font: inherit;
 }
 
 .login-card input:focus,
 .login-card select:focus {
-    outline: 2px solid #6848ec;
+    outline: 2px solid #ff70a6;
     outline-offset: 1px;
     border-color: transparent;
 }
 
 .login-card input[aria-invalid="true"] {
-    border-color: #b02525;
+    border-color: #d85c9c;
 }
 
-/* BUTTON */
 
 .login-submit {
     margin-top: 6px;
@@ -107,7 +100,7 @@
     border: 0;
     border-radius: 10px;
 
-    background: #6848ec;
+    background: #ff70a6;
     color: white;
 
     font: inherit;
@@ -116,7 +109,7 @@
 }
 
 .login-submit:hover {
-    background: #5536d6;
+    background: #ed5d95;
 }
 
 .login-submit:disabled {
@@ -124,21 +117,20 @@
     cursor: default;
 }
 
-/* MESSAGES */
 
 .login-error {
     margin-bottom: 16px;
     padding: 11px 14px;
 
     border-radius: 10px;
-    background: #fff0f0;
-    color: #a92222;
+    background: #fff0f6;
+    color: #bf3e70;
 }
 
 .login-hint {
     margin: 16px 0 0;
 
-    color: #5f6577;
+    color: #80768f;
     font-size: 13px;
     line-height: 1.5;
     text-align: center;

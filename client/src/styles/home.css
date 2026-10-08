@@ -1,6 +1,4 @@
 
-/* Home Page */
-
 .home-page {
   min-height: calc(100vh - 65px);
   background: #fffafc;
@@ -10,7 +8,6 @@
   box-sizing: border-box;
 }
 
-/* Main Container */
 
 .home-container {
   max-width: 1000px;
@@ -18,7 +15,6 @@
   text-align: center;
 }
 
-/* Heading */
 
 .home-label {
   font-size: 13px;
@@ -40,7 +36,6 @@
   color: #e66aab;
 }
 
-/* Description */
 
 .home-description {
   max-width: 550px;
@@ -50,7 +45,6 @@
   color: #80768f;
 }
 
-/* Buttons */
 
 .home-buttons {
   display: flex;
@@ -92,7 +86,6 @@
   color: #7651d0;
 }
 
-/* Feature Cards */
 
 .home-features {
   display: grid;
@@ -133,7 +126,6 @@
   margin: 0;
 }
 
-/* Mobile */
 
 @media (max-width: 768px) {
   .home-page {
