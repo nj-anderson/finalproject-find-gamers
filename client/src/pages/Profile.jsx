@@ -4,6 +4,7 @@ import { Gamepad2, MapPin } from "lucide-react";
 import ConnectButton from "../components/ConnectButton";
 import useAuth from "../auth/useAuth";
 import "../styles/profile.css";
+import "../styles/pastel-theme.css";
 
 const emptyGame = {
     name: "",

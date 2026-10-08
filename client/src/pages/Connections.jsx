@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Check, Copy, Crosshair, Gamepad2, Gem, Inbox, Send, UserSearch, Users } from "lucide-react";
 import useAuth from "../auth/useAuth";
 import "../styles/connections.css";
+import "../styles/pastel-theme.css";
 
 const GAMERTAG_LABELS = {
     discord: "Discord",

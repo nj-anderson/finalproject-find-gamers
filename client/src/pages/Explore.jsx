@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "../styles/explore.css";
+import "../styles/pastel-theme.css";
 import UserCard from "../components/UserCard.jsx";
 import FilterSelect from "../components/FilterSelect.jsx";
 

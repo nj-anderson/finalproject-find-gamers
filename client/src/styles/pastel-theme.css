@@ -1,0 +1,231 @@
+
+/* Shared pastel theme for Find Gamers */
+
+.explore-page,
+.profile-page,
+.connections-page {
+  --pastel-pink: #ff70a6;
+  --pastel-purple: #8b65df;
+  --pastel-mint: #eafff7;
+  --pastel-text: #38334f;
+  --pastel-muted: #80768f;
+
+  min-height: calc(100vh - 65px);
+  background: #fffafc;
+  color: var(--pastel-text);
+  font-family: "Segoe UI", Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+/* Page headings */
+
+.explore-page .header h1,
+.connections-header h1,
+.profile-heading h1 {
+  color: #38334f;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.explore-page .header p,
+.connections-header p {
+  color: #80768f;
+}
+
+/* Cards */
+
+.profile-card,
+.connection-card,
+.explore-page .user-card {
+  background: #ffffff;
+  border: 1px solid #f0e5f0;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(92, 62, 105, 0.04);
+}
+
+/* Profile hero */
+
+.profile-page .profile-hero {
+  background: #f3efff;
+  color: #38334f;
+  border: 1px solid #e7dcff;
+  border-radius: 18px;
+  box-shadow: none;
+}
+
+.profile-page .profile-heading p {
+  color: #80768f;
+}
+
+.profile-page .profile-label {
+  color: #b65b91 !important;
+}
+
+.profile-page .profile-meta {
+  color: #766c89;
+}
+
+.profile-page .profile-meta svg {
+  color: #8b65df;
+}
+
+.profile-page .profile-avatar {
+  background: #ff70a6;
+  color: white;
+  border-color: white;
+}
+
+/* Subcards */
+
+.profile-page .game-card {
+  background: #fff0f6;
+  border: 1px solid #ffe0eb;
+  border-radius: 12px;
+}
+
+.connections-page .shared-games {
+  background: #f3efff;
+}
+
+.connections-page .shared-games-title {
+  color: #7651d0;
+}
+
+.connections-page .connection-gamertags > div {
+  background: #fffafc;
+  border-color: #f0e5f0;
+}
+
+/* Connection avatars */
+
+.connections-page .connection-avatar {
+  background: #f1eaff;
+  color: #7651d0;
+}
+
+/* Buttons */
+
+.profile-page .profile-primary,
+.connections-page .connections-primary {
+  background: #ff70a6;
+  color: #ffffff;
+  border-radius: 10px;
+}
+
+.profile-page .profile-primary:hover,
+.connections-page .connections-primary:hover {
+  background: #ed5d95;
+}
+
+.profile-page .profile-secondary,
+.connections-page .connections-secondary {
+  background: #f1eaff;
+  color: #7651d0;
+  border-radius: 10px;
+}
+
+.profile-page .profile-secondary:hover,
+.connections-page .connections-secondary:hover {
+  background: #e7dcff;
+}
+
+/* Explore filters */
+
+.explore-page .filters select {
+  background: white;
+  border: 1px solid #e7dcff;
+  border-radius: 10px;
+  color: #38334f;
+  min-height: 44px;
+}
+
+.explore-page .filters select:focus {
+  outline: none;
+  border-color: #ff70a6;
+  box-shadow: 0 0 0 3px rgba(255, 112, 166, 0.12);
+}
+
+/* Form fields */
+
+.profile-page input:not([type="checkbox"]),
+.profile-page textarea,
+.profile-page select {
+  border: 1px solid #e7dcff;
+  border-radius: 10px;
+  background: white;
+  color: #38334f;
+}
+
+.profile-page input:focus,
+.profile-page textarea:focus,
+.profile-page select:focus {
+  outline: 2px solid #ff70a6;
+  outline-offset: 1px;
+}
+
+/* Labels and badges */
+
+.connections-page .connections-count {
+  background: #ff70a6;
+  color: white;
+}
+
+.connections-page .connections-summary li {
+  background: #f3efff;
+  box-shadow: none;
+}
+
+.connections-page .connections-summary strong {
+  color: #38334f;
+}
+
+.connections-page .connection-name {
+  color: #38334f;
+}
+
+.connections-page .connection-name:hover,
+.connections-page .connections-empty a {
+  color: #d85c9c;
+}
+
+.connections-page .connection-games svg,
+.connections-page .shared-badge svg {
+  color: #8b65df;
+}
+
+.connections-page .copy-button:hover {
+  background: #f1eaff;
+  color: #7651d0;
+}
+
+/* Simple focus styling */
+
+.explore-page button:focus-visible,
+.profile-page button:focus-visible,
+.connections-page button:focus-visible,
+.explore-page a:focus-visible,
+.profile-page a:focus-visible,
+.connections-page a:focus-visible {
+  outline: 3px solid #ff70a6;
+  outline-offset: 3px;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+  .explore-page,
+  .profile-page,
+  .connections-page {
+    padding-top: 35px;
+    padding-bottom: 50px;
+  }
+
+  .profile-page .profile-hero {
+    padding: 24px;
+  }
+
+  .connections-page .connection-card,
+  .profile-page .profile-card {
+    padding: 20px;
+  }
+}
