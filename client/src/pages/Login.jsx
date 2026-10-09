@@ -55,11 +55,12 @@ function Login() {
             <h1>Login</h1>
             <label htmlFor="username">Username:</label>
             <input type="text" id="username" name="username" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)}></input>
-            <label htmlFor="password">Username:</label>
+            <label htmlFor="password">Password:</label>
             <input type="text" id="password" name="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
             <label htmlFor="region">Region:</label>
             <select id="region" value={region} onChange={(e) => setRegion(e.target.value)}>
-                <option value="NA">North America (NA)</option>
+                <option value="NAE">North America East</option>
+                <option value="NAW">North America West</option>
                 <option value="EU">Europe (EU)</option>
                 <option value="ASIA">Asia (ASIA)</option>
                 <option value="OCE">Oceania (OCE)</option>
