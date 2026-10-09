@@ -1,5 +1,6 @@
 
 import { Link } from "react-router-dom";
+import { Gamepad2, Search, Users } from "lucide-react";
 import "../styles/home.css";
 
 function Home() {
@@ -30,22 +31,31 @@ function Home() {
         </div>
 
         <div className="home-features">
-          <div className="home-feature feature-pink">
-            <h3>Discover</h3>
+          <div className="home-feature">
+            <span className="home-feature-icon" aria-hidden="true">
+              <Search size={22} />
+            </span>
+            <h2>Discover</h2>
             <p>
               Find people who share your gaming interests.
             </p>
           </div>
 
-          <div className="home-feature feature-purple">
-            <h3>Connect</h3>
+          <div className="home-feature">
+            <span className="home-feature-icon" aria-hidden="true">
+              <Users size={22} />
+            </span>
+            <h2>Connect</h2>
             <p>
               Meet new players and make friends.
             </p>
           </div>
 
-          <div className="home-feature feature-mint">
-            <h3>Play</h3>
+          <div className="home-feature">
+            <span className="home-feature-icon" aria-hidden="true">
+              <Gamepad2 size={22} />
+            </span>
+            <h2>Play</h2>
             <p>
               Enjoy your favorite games together.
             </p>
