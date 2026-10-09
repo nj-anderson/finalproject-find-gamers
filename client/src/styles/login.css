@@ -44,7 +44,7 @@
     place-items: center;
 
     border-radius: 12px;
-    background: #ff70a6;
+    background: #6848ec;
     color: white;
 }
 
@@ -83,13 +83,13 @@
 
 .login-card input:focus,
 .login-card select:focus {
-    outline: 2px solid #ff70a6;
+    outline: 2px solid #6848ec;
     outline-offset: 1px;
     border-color: transparent;
 }
 
 .login-card input[aria-invalid="true"] {
-    border-color: #d85c9c;
+    border-color: #6848ec;
 }
 
 
@@ -100,7 +100,7 @@
     border: 0;
     border-radius: 10px;
 
-    background: #ff70a6;
+    background: #6848ec;
     color: white;
 
     font: inherit;
@@ -109,7 +109,7 @@
 }
 
 .login-submit:hover {
-    background: #ed5d95;
+    background: #3d25a1;
 }
 
 .login-submit:disabled {
@@ -124,7 +124,7 @@
 
     border-radius: 10px;
     background: #fff0f6;
-    color: #bf3e70;
+    color: #6848ec;
 }
 
 .login-hint {
