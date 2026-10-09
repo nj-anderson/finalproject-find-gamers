@@ -1,49 +1,87 @@
 # Final Project
 *Due October 9th by 1:59 PM*
 
-For your final project, you'll implement a web application that exhibits understanding of the course materials. 
-This project should provide an opportunity to both be creative and to pursue individual research and learning goals.
+https://finalproject-find-gamers-1.onrender.com/
 
-## General description
-Your project should consist of a complete Web application, exhibiting facets of the three main sections of the course material:
+### Project Description
 
-- Static web page content and design. You should have a project that is accessible, easily navigable, and features significant content.
-- Dynamic behavior implemented with JavaScript (TypeScript is also allowed if your group wants to explore it).
-- Server-side programming *using Node.js*. Typically this will take the form of some sort of persistent data (database), authentication, and possibly server-side computation.
-- A video (less than five minutes) where each group member explains some aspect of the project. An easy way to produce this video is for you all the groups members to join a Zoom call that is recorded; each member can share their screen when they discuss the project or one member can "drive" the interface while other members narrate (this second option will probably work better.) The video should be posted on YouTube or some other accessible video hosting service. Make sure your video is less than five minutes, but long enough to successfully  explain your project and show it in action. There is no minimum video length.
+We created a web application that helps gamers find other people to play their favorite games with. Users will log into the application with their username and password. From there, they can go to the profile page and edit their profile. User profiles consist of their username, a bio, the region they play in, the platforms they play on, and the games they play. For each game they play, they can list the name, their rank, their role, their playstyle, and whether they are looking for teammates.
 
-## Project ideation
-Excellent projects typically serve someone/some group; for this assignment you need to define your users and stakeholders. I encourage you to identify projects that will have impact, either artistically, politically, or in terms of productivity. 
+To find gamers, users navigate to the explore page. On the explore page they will see profiles of other gamers. They can filter by game, region, and platform. Once they find a good match, they can hit the add friend button to send a friend request. To manage their friend requests, users must navigate to the connections page. On the connection page users can see pending incoming requests, their current connections, friend requests they’ve sent, and suggested teammates. Once a connection is made, both users will be able to see the gamertags and/or discord of the other user so that they can move the connection onto the game.
 
-### Deliverables
+### Log In Instructions
+Dummy Accounts Usernames:
+- ValorantQueen
+- ChillGamer22
+- RocketPro
+- MinecraftMatt
+- OverwatchAmy
 
-#### Form Team (due 9/11)
-Students are will work in teams of 3-5 students for the project; teams of two can be approved with the permission of the instructor. Working in teams should help enable you to build a good project in a limited amount of time.  Use the `#project-logistics` channel in Discord to pitch ideas for final projects and/or find fellow team members as needed.
+(password for all of them is “dummy”)
 
-Teams must be in place by end of day on Friday, September 11th. If you have not identified a team at this point, you will be assigned a team. 
 
-#### Proposal (due 9/18 by end of day) 
-Provide an outline of your project direction and the names of associated team members. 
-The outline should have enough detail so that staff can determine if it meets the minimum expectations, or if it goes too far to be reasonable by the deadline. Please include a general description of a project, and list of key technologies/libraries you plan on using (e.g. React, Three.js, Svelte, TypeScript etc.). Two to four paragraphs should provide enough level of detail. Name the file proposal.md and submit a pull request by Friday, September 18th at 11:59 PM (end of day). *Only one pull request is required per team*.
+If you would like to make your own account, simply enter a username and password and an account will be registered.
 
-You will be given some class time to work on your proposal, but please plan on reserving additional time outside of class as needed. There are no other scheduled checkpoints for your project besides the final submission. 
+### Technologies Used
 
-#### Turning in Your Project
-Submit a second PR on the final project repo to turn in your app and code. Again, only one pull request per team.
+- **React**: Used to build the frontend user interface. We created components such as user cards, filters, and buttons, and used React state to manage filtering and user data.
+- **JavaScript**: Used for the application logic, including filtering gamers, handling button clicks, fetching data from the backend, and managing user interactions.
+- **Node.js**: Used to run the backend server and handle server-side functionality. Additionally used express-session to to store the logged-in user’s id in the session.
+- **Express.js**: Used to create the backend API and routes for users and friend connections. For example, our connections API handles sending, accepting, and removing friend requests.
+- **MongoDB**: Used as our database to store user profiles and connections/friend requests.
+- **Mongoose**: Used to connect the Express backend to MongoDB and work with our database models, such as User and Connection.
+- **HTML/CSS**: Used to structure and style the application. CSS was used for the responsive gamer card grid, filters, badges, buttons, and overall visual design.
+- **Lucide React**: Used for icons throughout the interface, such as the game controller, location, platform, teammate, and friend-request icons.
+- **Vite**: Used as the frontend development/build tool for our React application.
+- **Bycrypt.js**: Used to hash passwords before they are stored, that way the database never holds plaintext passwords.
 
-Deploy your app, in the form of a webpage, to Glitch/Heroku/Digital Ocean or some other service; it is critical that the application functions correctly wherever you post it.
+### Challenges Faced
 
-The README for your second pull request should contain:
+One challenge faced was keeping connections consistent. A friend request has to behave correctly from both users' points of view. The server blocks requests to yourself, duplicates requests in either direction, and accepts a request that wasn't sent to you. Two clicks at the same moment could still slip past those checks, so we added a unique database index on each sender/receiver pair. That guarantees a duplicate can never be saved.
 
-1. A brief description of what you created, and a link to the project itself (two paragraphs of text)
-2. Any additional instructions that might be needed to fully use your project (login information etc.)
-3. An outline of the technologies you used and how you used them.
-4. What challenges you faced in completing the project.
-5. What each group member was responsible for designing / developing.
-6. A link to your project video.
+Another challenge was the css styling of the user profile cards on the explore page. It was difficult to get the layout to behave how we wanted it too, and even more difficult to preserve the appearance as screen size shrinks.
 
-Think of 1,3, and 4 in particular in a similar vein to the design / tech achievements for A1—A4… make a case for why what you did was challenging and why your implementation deserves a grade of 100%.
 
-## FAQs
+### Group Member Contributions
 
-- **Can I use XYZ framework?** You can use any web-based frameworks or tools available, but for your server programming you need to use Node.js. Your client-side scripting language should be either JavaScript or TypeScript. While the course staff is happy to help with frameworks used in the class, we can't guarantee we'll be able to assist you with other frameworks / databases; choose carefully!
+**Norah Anderson**:
+- Set up the project, organized the basic file structure, and converted it to React.
+- Created the skeleton of the project including the navigation bar and basic page navigation.
+- Designed the User model.
+- Seeded the database with dummy users.
+- Implemented the explore page:
+  - Designed and implemented user profile cards.
+  - Styled the cards into a grid that responds well to smaller screens.
+  - Implemented accessibility with aria labels to achieve a lighthouse score of 100.
+  - Implemented filtering capability.
+
+**Ryan Ginn**:
+- Designed and built the connections system on the backend: the Connection model and the API for sending, accepting, declining, cancelling, and removing friend requests, with checks to prevent invalid or duplicate requests.
+- Implemented gamertag privacy: gamertags are only revealed to a user's accepted connections
+- Built the Connections page:
+  - pending requests, current connections, sent requests, and suggested teammates
+  - a summary row
+  - a "You both play" section showing shared games with rank and role
+  - one-click copy buttons for gamertags
+  - Suggested teammates feature
+  - Pending request notification
+- Updated login system to hash passwords before storing in database
+
+**Rashi Roselin**:
+- Designed and built the login page
+- Recorded the overview video
+
+**Jennifer Yuan**:
+- tbd
+
+### Project Video
+
+https://youtu.be/4N30GHcldXc
+
+  
+### AI Use Note: 
+- The dummy users were AI generated to save time.
+- AI was used for help rendering - we have a separate client and server folder which required two deployments
+- AI was used for minor styling assistance on the explore page's user cards (mostly when alignment was no working)
+
+
