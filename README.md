@@ -72,7 +72,12 @@ Another challenge was the css styling of the user profile cards on the explore p
 - Recorded the overview video
 
 **Jennifer Yuan**:
-- tbd
+- Developed the Profile page to allow users to view and manage their gaming profiles.
+- Added features for users to edit their personal information, gaming preferences, and favorite games.
+- Designed a profile layout that displays user information, gaming interests, and connections.
+- Updated CSS styling, page layouts, and color schemes to create a consistent design.
+- Focused on making the website clean, visually appealing, and user-friendly.
+- Collaborated with team members to improve the overall website experience.
 
 ### Project Video
 
