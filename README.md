@@ -82,6 +82,6 @@ https://youtu.be/4N30GHcldXc
 ### AI Use Note: 
 - The dummy users were AI generated to save time.
 - AI was used for help rendering - we have a separate client and server folder which required two deployments
-- AI was used for minor styling assistance on the explore page's user cards (mostly when alignment was no working)
+- AI was used for minor styling assistance on the explore page's user cards (mostly when alignment was not working)
 
 
